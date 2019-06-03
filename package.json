@@ -3,9 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@wojtekmaj/react-timerange-picker": "^2.1.0",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^11.0.1",
+    "react-calendar": "^2.18.1",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-draggable": "^3.3.0",
+    "react-measure": "^2.3.0",
+    "react-mvp": "0.0.5",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "react-time-picker": "^3.5.2",
+    "styled-components": "^4.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

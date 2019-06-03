@@ -1,173 +1,79 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Board from '../src/Board.js'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-class Game extends React.Component {
+import CalendarView from './views/Calendar.js'
+import DailySchedule from './views/DailySchedule.js'
+import GoalsView from './views/Goals.js'
+import WeeklyEventsView from './views/WeeklyEvents.js'
+import AddEventView from './views/AddEvent.js'
+import AddGoalView from './views/AddGoal.js'
+import RolesView from './views/Roles.js'
+import LoginView from './views/Login.js'
+import MainView from './views/Main.js'
+import YearlyView from './views/Yearly.js'
+import DecomposeView from './views/Decompose.js'
+import MonthlyView from './views/Monthly.js'
+import ContinuousView from './views/Continuous.js'
+import WeekView from './views/Week.js'
+import DailyEvents from './views/DailyEvents.js'
 
+import Model from './model/Model.js'
+
+
+class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-	  		history: [{
-				squares: [[null, null, null],
-					[null, null, null],
-					[null, null, null]]
-			}],
-			xIsNext: true,
-			stepNumber: 0,
-			direction: false,
-			winners: null,
-		};
-	
-	}
-
-	toggleHistory() {
-		console.log("CALLED");
-		const direction = !this.state.direction;
-		this.setState({direction: direction});
-	}
-
-	renderMoves(history) {
-		let moves = history.map((step, move) => {
-			const placed =  history[move].placed;
-			let desc = move ?
-				'Go to [ ' + placed + ' ]' :
-				'Go to game start';
-			let moveCurrent = move === this.state.stepNumber;
-			if (moveCurrent) {
-				desc = <b>{desc}</b>
-			}
-			return (
-				<li key={move}>
-					<button onClick={() => this.jumpTo(move)}>
-						{desc} 
-					</button>
-				</li>
-			);
-		});
-
-		const direction = this.state.direction;
-		if (direction) {
-			moves.reverse();
+		this.state =  {
+			//			view: "LOGIN",
+			view: "MAIN",
 		}
-
-		return moves;
-	}
-
-
-	getStatus(winnerInfo, current) {
-		let status = null;
-		let winner = winnerInfo ? winnerInfo.winner : null;
-		if (winner) {
-			status = 'Winner: ' + winner;
-		}
-		else if (calculateDraw(current.squares)) {
-			status = 'DRAW';
-		}
-		else {
-			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-		}
-		return status;
+		this.model = new Model(this.setView);
 	}
 
 	render() {
-		const history = this.state.history;
-		const current = history[this.state.stepNumber];
-		
-		let moves = this.renderMoves(history);
-
-
-		const winnerInfo = calculateWinner(current.squares);
-		let status = this.getStatus(winnerInfo, current);
-		let winBoxes = winnerInfo ? winnerInfo.boxes : null;
-
-		return (
-		  <div className="game">
-			<div className="game-board">
-				<Board 
-					squares={current.squares}
-					onClick={(i, j) => this.handleClick(i, j)}
-					winSquares={winBoxes}
-				/>
-			</div>
-			<div className="game-info">
-			<div>{status}</div>
-			<button onClick={() => this.toggleHistory()}>REVERSO</button>
-			  <ol>{moves}</ol>
-			</div>
-		  </div>
-		);
-  }
-	handleClick(i, j) {
-		const history = this.state.history.slice(0, this.state.stepNumber + 1);
-		const current = history[history.length - 1];
-		let squares = JSON.parse(JSON.stringify([...current.squares]));
-		if (squares[i][j] || calculateWinner(squares)) {
-			return;
-		}
-		
-		const move = this.state.xIsNext ? 'X' : 'O';
-		squares[i][j] = move;
-		const location = '(' + i + ',' + j + ')';
-
-		this.setState({
-			history: history.concat([{
-				squares: squares,
-				placed: 'placed ' + move + ' in ' + location, 
-			}]),
-			stepNumber: history.length,
-			xIsNext: !this.state.xIsNext
-		});
-	}
-
-	jumpTo(step) {
-		this.setState({
-			stepNumber: step,
-			xIsNext: (step % 2) === 0,
-		});
-	}
-}
-
-// ========================================
-
-ReactDOM.render(
-  <Game />,
-  document.getElementById('root')
-);
-
-function calculateWinner(squares) {
-	const lines = [
-		[[0,0], [0,1], [0,2]],
-		[[1,0], [1,1], [1,2]],
-		[[2,0], [2,1], [2,2]],
-		[[0,0], [1,0], [2,0]],
-		[[0,1], [1,1], [2,1]],
-		[[0,2], [1,2], [2,2]],
-		[[0,0], [1,1], [2,2]],
-		[[0,2], [1,1], [2,0]],
-
-];
-	for (let i = 0; i < lines.length; ++i) {
-		const [a, b, c] = lines[i];
-		if (squares[a[0]][a[1]] && 
-			squares[a[0]][a[1]] === squares[b[0]][b[1]] && 
-			squares[a[0]][a[1]] === squares[c[0]][c[1]]) {
-			return {
-				winner: squares[a[0]][a[1]], 
-				boxes: [JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]};
+		switch(this.state.view) {
+			case "CALENDAR":
+				return <CalendarView model={this.model}/>
+			case "DAILY SCHEDULE":
+				return <DailySchedule model={this.model}/>
+			case "DAILY EVENTS":
+				return <DailyEvents model={this.model}/>
+			case "GOALS":
+				return <GoalsView model={this.model}/>
+			case "WEEKLY EVENTS":
+				return <WeeklyEventsView model={this.model}/>
+			case "ADD EVENT":
+				return <AddEventView model={this.model}/>
+			case "ADD GOAL":
+				return <AddGoalView model={this.model}/>
+			case "ROLES":
+				return <RolesView model={this.model}/>
+			case "LOGIN":
+				return <LoginView model={this.model}/>
+			case "MAIN":
+				return <MainView model={this.model}/>
+			case "YEARLY":
+				return <YearlyView model={this.model}/>
+			case "DECOMPOSE":
+				return <DecomposeView model={this.model}/>
+			case "MONTHLY":
+				return <MonthlyView model={this.model}/>
+			case "CONTINUOUS":
+				return <ContinuousView model={this.model}/>
+			case "WEEK":
+				return <WeekView model={this.model}/>
+			default:
+				return <p>VIEW {this.state.view} NOT FOUND</p>
 		}
 	}
-	return null;
+
+	setView = (view) => {
+		this.setState({view: view});
+	}
+
 }
 
-function calculateDraw(squares) {
-	let allFilled = true;
-	squares.forEach((row) => {
-		row.forEach((element) => {
-			if (element == null) {
-				allFilled = false;
-			}
-		});
-	});
-	return allFilled;
-}
+
+
+ReactDOM.render(<App />, document.getElementById('root'));
+	
