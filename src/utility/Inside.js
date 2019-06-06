@@ -11,6 +11,6 @@ let inside = (x1, y1, w, h, x2, y2) => {
 		&& (x2 < x1 + w)
 		&& (y2 < y1 + h)
 	);
-}
+};
 
 export default inside;

@@ -1,8 +1,8 @@
 import React from 'react'
-import TodoItem from './TodoItem.js'
-import Pos from '../utility/Pos.js'
-import Inside from '../utility/Inside.js'
-import Clamp from '../utility/Clamp.js'
+import TodoItem from './TodoItem'
+import Pos from '../utility/Pos'
+import Inside from '../utility/Inside'
+import Clamp from '../utility/Clamp'
 
 class TodoList extends React.Component {
 
@@ -16,7 +16,7 @@ class TodoList extends React.Component {
 		else {
 			this.props.handler(text, pos);
 		}
-	}
+	};
 
 	constructor(props) {
 		super(props);

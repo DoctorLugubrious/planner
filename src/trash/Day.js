@@ -1,9 +1,9 @@
 import React from 'react'
 
-import DayPresenter from '../presenters/Day.js'
-import {TodoList} from './TodoList.js'
-import { DailySchedule, generateSchedule, getTime} from './DailySchedule.js'
-import DeepCopy from '../utility/DeepCopy.js'
+import DayPresenter from '../presenters/Day'
+import {TodoList} from './TodoList'
+import { DailySchedule, generateSchedule, getTime} from './DailySchedule'
+import DeepCopy from '../utility/DeepCopy'
 
 import './Day.css'
 
@@ -21,7 +21,7 @@ export default class DayView extends React.Component {
 
 	onChange = (date) => {
 		this.setState({date: date});
-	}
+	};
 
 	moveListItem = (item, newPos) => {
 		let newItems = this.state.items.slice();
@@ -32,7 +32,7 @@ export default class DayView extends React.Component {
 
 			this.setState({items: newItems});
 		}
-	}
+	};
 
 	onDragEnd = (name, newPos) => {
 		let newItems = DeepCopy(this.state.items);
@@ -53,7 +53,7 @@ export default class DayView extends React.Component {
 
 	notifyItems = (newItems) => {
 		this.setState({items: newItems});
-	}
+	};
 
 
 	render() {

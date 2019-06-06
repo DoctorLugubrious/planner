@@ -1,7 +1,7 @@
 import React from 'react'
-import range from '../utility/Range.js'
+import range from '../utility/Range'
 import './DailySchedule.css'
-import Pos from '../utility/Pos.js'
+import Pos from '../utility/Pos'
 
 function addAllMinutes(dst, hour, suffix) {
 	let key = hour + suffix;
@@ -24,7 +24,7 @@ let generateSchedule = () => {
 		addAllMinutes(schedule, hour, 'pm');
 	}
 	return schedule;
-}
+};
 
 let getTime = (x, y) => {
 	let rowHeight = Pos("row0").height;
@@ -32,7 +32,7 @@ let getTime = (x, y) => {
 	let yOffset = y - baseY;
 	console.log(yOffset / rowHeight);
 	return {hour: '6am', minute: '00'};
-}
+};
 
 class DailySchedule extends React.Component {
 
@@ -57,7 +57,7 @@ class DailySchedule extends React.Component {
 				</tr>
 			</thead>
 		);
-	}
+	};
 
 	generateBody = () => {
 		let items = [];
@@ -80,7 +80,7 @@ class DailySchedule extends React.Component {
 				</tr>
 			))
 		}</tbody>)
-	}
+	};
 
 	render = () => {
 		let i = 0;
