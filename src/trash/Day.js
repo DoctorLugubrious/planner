@@ -2,7 +2,7 @@ import React from 'react'
 
 import DayPresenter from '../presenters/Day'
 import {TodoList} from './TodoList'
-import { DailySchedule, generateSchedule, getTime} from './DailySchedule'
+import {DailySchedule, generateSchedule, getTime} from './DailySchedule'
 import DeepCopy from '../utility/DeepCopy'
 
 import './Day.css'
@@ -72,10 +72,10 @@ export default class DayView extends React.Component {
 					schedule={this.state.schedule}/>
 			</div>
 			<br/>
-			<button onClick={() => this.presenter.onChangeView("CALENDAR")}>
+			<button onClick={() => this.state.model.changeView("CALENDAR")}>
 				Calendar
 			</button>
-			<button onClick={() => this.presenter.onChangeView("MAIN")}>
+			<button onClick={() => this.state.model.changeView("MAIN")}>
 				Back to main
 			</button>
 			</div>

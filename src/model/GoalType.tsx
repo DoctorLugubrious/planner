@@ -1,0 +1,8 @@
+export enum GoalType {
+	LONG_TERM,
+	YEARLY,
+	MONTHLY,
+	WEEKLY,
+	EVERY_WEEK,
+	EVERY_DAY
+}

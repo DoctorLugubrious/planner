@@ -1,5 +1,5 @@
 import Model from "../../model/Model";
 
-export default interface viewProps {
+export interface viewState {
 	model: Model;
 }
