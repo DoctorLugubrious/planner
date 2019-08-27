@@ -3,7 +3,7 @@ import React from 'react'
 import DayPresenter from '../presenters/Day'
 import {TodoList} from './TodoList'
 import {DailySchedule, generateSchedule, getTime} from './DailySchedule'
-import DeepCopy from '../utility/DeepCopy'
+import DeepCopy from '../utility/objects/DeepCopy'
 
 import './Day.css'
 

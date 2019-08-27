@@ -1,13 +1,13 @@
-import DailyGoal from "../../model/DailyGoal";
+import DailyGoal from "../../goalData/DailyGoal";
 import React from "react";
-import range from "../../utility/Range";
-import {ScheduledEvent} from "../../model/ScheduledEvent";
-import ReoccurringWeeklyEvent from "../../model/ReoccurringWeeklyEvent";
+import range from "../../utility/numbers/Range";
+import {ScheduledEvent} from "../../goalData/ScheduledEvent";
+import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
 import {viewState} from "../data/viewState";
 import DailyGoalView from "./DailyGoalView";
-import FormatTime from "../../utility/FormatTime";
-import pad from "../../utility/Pad";
-import ScheduledEventInfo from "./ScheduledEventInfo";
+import FormatTime from "../../utility/datesAndTimes/FormatTime";
+import pad from "../../utility/numbers/Pad";
+import ScheduledEventInfo from "../scheduledEvents/ScheduledEventInfo";
 import Model from "../../model/Model";
 
 
@@ -29,14 +29,20 @@ let generateGridStyle = (name: string, index: number) => {
 
 
 interface DailyScheduleBodyProps {
-	goals: DailyGoal[];
-	events: ScheduledEvent[];
-	reoccurringEvents: ReoccurringWeeklyEvent[];
-	completeGoal: (goal: DailyGoal, oldName: string) => void;
 	model: Model;
+	detailed: boolean;
 }
 
 export default class DailyScheduleBody extends React.Component<DailyScheduleBodyProps, viewState> {
+
+	lastTimeIndex: number = 0;
+
+
+	timeIndex: number = 0;
+	eventIndex: number = 0;
+	gridString: string = "";
+	lastEventName: string | null = null;
+	lastEventTime: number | undefined = undefined;
 
 	addItem = (time: string,
 		item: DailyGoal|ScheduledEvent|ReoccurringWeeklyEvent,
@@ -47,16 +53,9 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 			array.splice(index + 1, 0, item);
 		}
 		else if (time !== "") {
-			console.log("TIME NOT FURNd: " + time, array);
+			console.log("TIME NOT FURNd: " + time, item);
 		}
 	};
-
-
-	timeIndex: number = 0;
-	eventIndex: number = 0;
-	gridString: string = "";
-	lastEventName: string|null = null;
-	lastEventTime: number|undefined = undefined;
 
 	generateGridElements = (schedule: (string|DailyGoal|ScheduledEvent|ReoccurringWeeklyEvent|null)[],
 						 result: JSX.Element[]) => {
@@ -64,14 +63,12 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 		schedule.forEach((event) => {
 
 			if (typeof (event) == 'string') {
-				let timeStyle = generateGridStyle("time", this.timeIndex);
-				result.push(<div style={timeStyle} key={timeStyle.gridArea}>{event}</div>);
-
-				this.gridString += '"';
-				this.gridString += timeStyle.gridArea;
-				this.gridString += ' ';
-
-				++this.timeIndex;
+				if (this.props.detailed) {
+					this.AddTimeDetailed(result, event);
+				}
+				else {
+					this.AddTimeShort(result, event);
+				}
 			}
 			else if (event === null) {
 				if (this.lastEventName === null || this.lastEventTime === undefined) {
@@ -87,44 +84,108 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 					}
 				}
 			}
-			else if (event.hasOwnProperty("completed")) {
-				let itemStyle = generateGridStyle("event", this.eventIndex);
-				result.push(<div style={itemStyle}><DailyGoalView event={event as DailyGoal}/></div>);
-
-				this.updateGridItem(itemStyle, event);
-			}
-			else if (event.hasOwnProperty("date")) {
-				let event2: ScheduledEvent = event as ScheduledEvent;
-				let itemStyle = generateGridStyle("event", this.eventIndex);
-				result.push(<div style={itemStyle} key={itemStyle.gridArea}>
-					<ScheduledEventInfo model={this.props.model} event={event2}/>
-				</div>);
-
-				this.updateGridItem(itemStyle, event);
-			}
-			else if (event.hasOwnProperty("date")) {
-				let itemStyle = generateGridStyle("event", this.eventIndex);
-				result.push(<div style={itemStyle} key={itemStyle.gridArea}>
-					{event.name}
-				</div>);
-
-				this.updateGridItem(itemStyle, event);
+			else {
+				if (this.props.detailed) {
+					this.addEventDetailed(event, result);
+				}
+				else {
+					this.addEventBlock(result, event.len);
+				}
 			}
 		});
 	};
 
-	private updateGridItem(itemStyle:{gridArea: string}, event: DailyGoal|ScheduledEvent|ReoccurringWeeklyEvent) {
-		this.gridString += itemStyle.gridArea + '"';
-		this.lastEventName = itemStyle.gridArea;
-		this.lastEventTime = event.len;
-		if (this.lastEventTime != null) {
-			this.lastEventTime -= minOffset;
-			if (this.lastEventTime <= 0) {
-				this.lastEventTime = undefined;
-				this.lastEventName = null;
-			}
+	generateSchedule = () => {
+		let schedule: (string | DailyGoal | ScheduledEvent | ReoccurringWeeklyEvent | null)[] = [];
+		for (const hour of range(5, 12)) {
+			addAllMinutes(schedule, hour, 'am');
 		}
-		++this.eventIndex;
+		addAllMinutes(schedule, 12, 'pm');
+		for (const hour of range(1, 9)) {
+			addAllMinutes(schedule, hour, 'pm');
+		}
+
+		this.props.model.dailyGoals.forEach(value => {
+			this.addItem(value.start, value, schedule);
+		});
+
+		this.props.model.scheduledEvents.forEach(value => {
+			this.addItem(FormatTime(value.date, true), value, schedule);
+		});
+
+		this.props.model.weeklyEvents.forEach(value => {
+			this.addItem(value.start, value, schedule);
+		});
+
+		this.cleanupArray(schedule);
+
+		return schedule;
+	};
+
+	private AddTimeDetailed(result: JSX.Element[], event: string) {
+		let timeStyle = generateGridStyle("time", this.timeIndex);
+		result.push(<div style={timeStyle} key={timeStyle.gridArea}>{event}</div>);
+
+		this.gridString += '"';
+		this.gridString += timeStyle.gridArea;
+		this.gridString += ' ';
+
+		++this.timeIndex;
+	}
+
+	private AddTimeShort(result: JSX.Element[], event: string) {
+		const gap = 60;
+		const offset = gap / minOffset;
+
+		let timeStyle = generateGridStyle("time", this.timeIndex);
+
+		this.gridString += '"';
+		this.gridString += timeStyle.gridArea;
+		this.gridString += ' ';
+
+		if (this.lastTimeIndex % offset == 0) {
+			result.push(<div style={timeStyle} key={timeStyle.gridArea}>{event}</div>);
+			++this.timeIndex;
+			++this.lastTimeIndex;
+		}
+		else {
+			++this.lastTimeIndex;
+		}
+	}
+
+	private addEventBlock(result: JSX.Element[], len: number | undefined) {
+		let itemStyle = generateGridStyle("event", this.eventIndex);
+		result.push(<div style={itemStyle} className="block"><p></p></div>);
+		this.updateGridItem(itemStyle, {len});
+	}
+
+	private addEventDetailed(event: DailyGoal | ScheduledEvent | ReoccurringWeeklyEvent, result: JSX.Element[]) {
+		if (event.hasOwnProperty("completed")) {
+			let itemStyle = generateGridStyle("event", this.eventIndex);
+			result.push(<div style={itemStyle}><DailyGoalView
+				event={event as DailyGoal}
+				complete={this.props.model.updateDailyGoal}
+			/></div>);
+
+			this.updateGridItem(itemStyle, event);
+		}
+		else if (event.hasOwnProperty("date")) {
+			let event2: ScheduledEvent = event as ScheduledEvent;
+			let itemStyle = generateGridStyle("event", this.eventIndex);
+			result.push(<div style={itemStyle} key={itemStyle.gridArea}>
+				<ScheduledEventInfo model={this.props.model} event={event2}/>
+			</div>);
+
+			this.updateGridItem(itemStyle, event);
+		}
+		else if (event.hasOwnProperty("date")) {
+			let itemStyle = generateGridStyle("event", this.eventIndex);
+			result.push(<div style={itemStyle} key={itemStyle.gridArea}>
+				{event.name}
+			</div>);
+
+			this.updateGridItem(itemStyle, event);
+		}
 	}
 
 	cleanupArray = (array: (string|DailyGoal|ScheduledEvent|ReoccurringWeeklyEvent|null)[]) => {
@@ -144,32 +205,19 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 		}
 	};
 
-	generateSchedule = () => {
-		let schedule: (string|DailyGoal|ScheduledEvent|ReoccurringWeeklyEvent|null)[] = [];
-		for(const hour of range(5, 12)) {
-			addAllMinutes(schedule, hour, 'am');
+	private updateGridItem(itemStyle: { gridArea: string }, event: { len?: number }) {
+		this.gridString += itemStyle.gridArea + '"';
+		this.lastEventName = itemStyle.gridArea;
+		this.lastEventTime = event.len;
+		if (this.lastEventTime != null) {
+			this.lastEventTime -= minOffset;
+			if (this.lastEventTime <= 0) {
+				this.lastEventTime = undefined;
+				this.lastEventName = null;
+			}
 		}
-		addAllMinutes(schedule, 12, 'pm');
-		for(const hour of range(1, 9)) {
-			addAllMinutes(schedule, hour, 'pm');
-		}
-
-		this.props.goals.forEach(value => {
-			this.addItem(value.start, value, schedule);
-		});
-
-		this.props.events.forEach(value => {
-			this.addItem(FormatTime(value.date, true), value, schedule);
-		});
-
-		this.props.reoccurringEvents.forEach(value => {
-			this.addItem(value.start, value, schedule);
-		});
-
-		this.cleanupArray(schedule);
-
-		return schedule;
-	};
+		++this.eventIndex;
+	}
 
 	render() {
 		let schedule = this.generateSchedule();

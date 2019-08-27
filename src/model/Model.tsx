@@ -1,23 +1,23 @@
-import ServerProxy from './ServerProxy';
-import DailyGoal from "./DailyGoal";
-import ReoccurringWeeklyEvent from "./ReoccurringWeeklyEvent";
-import Goal from "./Goal";
-import goal from "./Goal";
-import {GoalType} from "./GoalType";
+import ServerProxy from '../server/ServerProxy';
+import DailyGoal from "../goalData/DailyGoal";
+import ReoccurringWeeklyEvent from "../goalData/ReoccurringWeeklyEvent";
+import Goal from "../goalData/Goal";
+import goal from "../goalData/Goal";
+import {GoalType} from "../goalData/GoalType";
 import {ViewType} from "../views/ViewTypes";
 
 import Listener from "../views/Listener";
-import RepeatingGoal from "./RepeatingGoal";
-import FormatDate from '../utility/FormatDate';
-import {Auth} from "./Auth";
-import ServerResponse from "./ServerResponse";
-import {ScheduledEvent} from "./ScheduledEvent";
+import RepeatingGoal from "../goalData/RepeatingGoal";
+import FormatDate from '../utility/datesAndTimes/FormatDate';
+import {Auth} from "../server/Auth";
+import ServerResponse from "../server/responseData/ServerResponse";
+import {ScheduledEvent} from "../goalData/ScheduledEvent";
 import User from "./User";
-import {GoalWithType} from "./GoalWithType";
+import {GoalWithType} from "../goalData/GoalWithType";
 
 import Cookies from 'universal-cookie';
-import WeeklyEventView from "../views/schedule/WeeklyEvent";
-import DecomposeResult from "./DecomposeResult";
+import WeeklyEventView from "../views/weeklyEvents/WeeklyEvent";
+import DecomposeResult from "../server/responseData/DecomposeResult";
 
 export default class Model {
 	get date(): Date {
@@ -25,7 +25,6 @@ export default class Model {
 	}
 
 	set date(value: Date) {
-		//TODO fetch data from server when this happens
 		this._date = value;
 		this.server.getDate(this.auth, value).then(value1 => {
 			if (value1.data !== null) {

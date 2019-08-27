@@ -1,8 +1,8 @@
 import React from 'react'
 import TodoItem from './TodoItem'
-import Pos from '../utility/Pos'
-import Inside from '../utility/Inside'
-import Clamp from '../utility/Clamp'
+import Pos from './Pos'
+import Inside from './Inside'
+import Clamp from '../utility/numbers/Clamp'
 
 class TodoList extends React.Component {
 

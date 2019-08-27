@@ -1,41 +1,42 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import CalendarView from './views/mainViews/Calendar'
-import DailySchedule from './views/mainViews/DailySchedule'
-import LongTermGoalsView from './views/mainViews/LongTermGoals'
-import WeeklyEventsView from './views/mainViews/WeeklyEvents'
-import AddLongTermGoal from './views/mainViews/AddLongTermGoal'
-import RolesView from './views/mainViews/Roles'
-import LoginView from './views/mainViews/Login'
-import MainView from './views/mainViews/Main'
-import YearlyView from './views/mainViews/Yearly'
-import DecomposeView from './views/mainViews/Decompose'
-import MonthlyView from './views/mainViews/Monthly'
-import RepeatingGoalView from './views/mainViews/RepeatingGoalView'
-import WeekyGoalsView from './views/mainViews/WeeklyGoals'
-import DailyEvents from './views/mainViews/DailyEvents'
+import CalendarView from './views/calendar/Calendar'
+import DailySchedule from './views/DailySchedule/DailySchedule'
+import LongTermGoalsView from './views/longTermGoals/LongTermGoals'
+import WeeklyEventsView from './views/weeklyEvents/WeeklyEvents'
+import AddLongTermGoal from './views/longTermGoals/AddLongTermGoal'
+import RolesView from './views/roles/Roles'
+import LoginView from './views/user/Login'
+import MainView from './views/Main'
+import YearlyView from './views/goals/Yearly'
+import DecomposeView from './views/decompose/Decompose'
+import MonthlyView from './views/goals/Monthly'
+import RepeatingGoalView from './views/repeatingGoals/RepeatingGoalView'
+import WeekyGoalsView from './views/Week/WeeklyGoals'
+import DailyEvents from './views/dailyPlan/DailyEvents'
 import Model from './model/Model'
 import {ViewType} from "./views/ViewTypes";
-import AddScheduledEventView from "./views/mainViews/AddScheduledEvent";
-import ChangePasswordView from "./views/mainViews/ChangePassword";
-import EditScheduledEvent from "./views/mainViews/EditScheduledEvent";
+import AddScheduledEventView from "./views/scheduledEvents/AddScheduledEvent";
+import ChangePasswordView from "./views/user/ChangePassword";
+import EditScheduledEvent from "./views/scheduledEvents/EditScheduledEvent";
+import Header from "./views/page/header/header";
+import Footer from "./views/page/footer/footer";
 
 class App extends React.Component {
+	state: { view: ViewType };
+	private readonly model: Model;
+
 	constructor(props: any) {
 		super(props);
-		this.state =  {
+		this.state = {
 			view: ViewType.LOGIN,
 		};
 		this.model = new Model(this.setView)
 	}
 
-	state: {view: ViewType};
-
-	private readonly model :Model;
-
-	render() {
-		switch(this.state.view) {
+	getView() {
+		switch (this.state.view) {
 			case ViewType.CALENDAR:
 				return <CalendarView model={this.model}/>;
 			case ViewType.DAILY_SCHEDULE:
@@ -75,6 +76,14 @@ class App extends React.Component {
 		}
 	}
 
+	render() {
+		return <div>
+			<Header username={this.model.username}/>
+			{this.getView()}
+			<Footer view={this.state.view}/>
+		</div>
+	}
+
 	setView = (view: ViewType) => {
 		this.setState({view: view});
 	}
@@ -82,6 +91,5 @@ class App extends React.Component {
 }
 
 
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 	

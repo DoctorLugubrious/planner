@@ -1,0 +1,10 @@
+import React from 'react'
+
+export enum RubySpriteType {
+	NEUTRAL_POSE,
+	GESTURE_POSE,
+	TALKING,
+	TALKING_GESTURE,
+	TALKING_EYES_CLOSED,
+	TALKING_GESTURE_EYES_CLOSED
+}

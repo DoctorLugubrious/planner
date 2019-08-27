@@ -1,7 +1,7 @@
 import React from 'react'
-import range from '../utility/Range'
+import range from '../utility/numbers/Range'
 import './DailySchedule.css'
-import Pos from '../utility/Pos'
+import Pos from './Pos'
 
 function addAllMinutes(dst, hour, suffix) {
 	let key = hour + suffix;

@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from "react";
-import goal from "../../model/Goal";
-import {GoalType} from "../../model/GoalType";
+import goal from "../../goalData/Goal";
+import {GoalType} from "../../goalData/GoalType";
 
 interface GoalListProps {
 	goals: Map<string, goal[]>;

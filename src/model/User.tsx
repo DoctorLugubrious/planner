@@ -1,10 +1,10 @@
-import ReoccurringWeeklyEvent from "./ReoccurringWeeklyEvent";
-import Goal from "./Goal";
-import DailyGoal from "./DailyGoal";
-import {ScheduledEvent} from "./ScheduledEvent";
-import FormatDate from "../utility/FormatDate";
-import RepeatingGoal from "./RepeatingGoal";
-import {Auth} from "./Auth";
+import ReoccurringWeeklyEvent from "../goalData/ReoccurringWeeklyEvent";
+import Goal from "../goalData/Goal";
+import DailyGoal from "../goalData/DailyGoal";
+import {ScheduledEvent} from "../goalData/ScheduledEvent";
+import FormatDate from "../utility/datesAndTimes/FormatDate";
+import RepeatingGoal from "../goalData/RepeatingGoal";
+import {Auth} from "../server/Auth";
 
 export default class User {
 	readonly username: string;
@@ -256,6 +256,7 @@ export default class User {
 
 		that.weeklyEvents = this.weeklyEvents;
 		that.roles = this.roles;
+		that.continuousGoals = this.continuousGoals;
 
 		that.longTermGoals = this.longTermGoals;
 		that.yearlyGoals  = this.yearlyGoals;

@@ -1,5 +1,4 @@
 import * as React from "react";
-import {GoalFrequency} from "../../model/GoalFrequency";
 import {ChangeEvent} from "react";
 
 type EnumType = { [s: number]: string };
