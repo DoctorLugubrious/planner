@@ -14,8 +14,8 @@ export default class AddLongTermGoal extends React.Component<viewProps, viewStat
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
-		return true;
+		//maybe fix
+		return false;
 	}
 
 

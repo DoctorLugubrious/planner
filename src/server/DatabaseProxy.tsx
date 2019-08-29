@@ -69,13 +69,13 @@ export class DatabaseProxy implements ServerInterface{
 		}));
 	}
 
-//TODO get rid of returning all daily goals
+
 	addDailyGoal: (date: Date, goal: DailyGoal, auth: Auth) => Promise<ServerResponse<Map<string, DailyGoal[]>>>
 		= (date: Date, goal: DailyGoal, auth: Auth) => {
 		return this.getTimedPromise(() => {
 			let user = this.getUser(auth);
 			user.addDailyGoal(date, goal);
-			return user.dailyGoals;
+			return user.filterForDate(date).dailyGoals;
 		}, auth);
 	};
 	addLongTermGoal: addGoalFunction = (auth: Auth, goal: Goal, role: string) => {
@@ -152,7 +152,7 @@ export class DatabaseProxy implements ServerInterface{
 		return this.getTimedPromise(() => {
 			let user = this.getUser(auth);
 			user.updateDailyGoal(date, goal, oldName);
-			return user.dailyGoals;
+			return user.filterForDate(date).dailyGoals;
 		}, auth);
 	};
 
@@ -243,7 +243,7 @@ export class DatabaseProxy implements ServerInterface{
 		return this.getTimedPromise(() => {
 			let user = this.getUser(auth);
 			user.deleteDailyGoal(date, goal.name);
-			return user.dailyGoals;
+			return user.filterForDate(date).dailyGoals;
 		}, auth);
 	};
 	deleteLongTermGoal: deleteGoalFunction = (auth: Auth, role: string, name: string) => {

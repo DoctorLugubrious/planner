@@ -12,9 +12,10 @@ export default class CalendarView extends React.Component<viewProps, viewState> 
 		this.listener = new Listener(this);
 	}
 
+
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
-		return true;
+		//MAY NOT WORK...?
+		return false;
 	}
 
 	listener: Listener;

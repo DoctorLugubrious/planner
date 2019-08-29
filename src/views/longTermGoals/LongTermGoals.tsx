@@ -9,35 +9,26 @@ import {GoalType} from "../../goalData/GoalType";
 
 export default class LongTermGoalsView extends React.Component<viewProps, viewState> {
 
+	private originalSize: number;
+
 	constructor(props: viewProps) {
 		super(props);
 		this.listener = new Listener(this);
+
+		this.originalSize = props.model.longTermGoals.size;
 	}
 
 	listener: Listener;
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
-		return true;
+		if (this.originalSize !== nextProps.model.longTermGoals.size) {
+			this.originalSize = nextProps.model.longTermGoals.size;
+			return true;
+		}
+		return false;
 	}
 
 	render = () => {
-		/*
-		let goals: JSX.Element[] = [];
-		let i = 0;
-		this.props.model.longTermGoals.forEach((goalList: Goal[], role: string) => {
-			goals.push((<div key={++i}>
-				<h2>{role}</h2>
-				<ul>
-				{goalList.map((goal:Goal, index: number) =>
-					<li key={i + "-" + index}>
-						{goal.name}
-						<button onClick={() => {this.props.model.deleteLongTermGoal(role, goal.name)}}>DELETE</button>
-					</li>)}
-				</ul>
-			</div>));
-
-		});*/
 
 		let model = this.state.model;
 		return (<div>

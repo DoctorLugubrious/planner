@@ -1,6 +1,6 @@
 import * as React from "react";
 import DailyGoal from "../../goalData/DailyGoal";
-import DailyGoalDisplay from "../DailySchedule/DailyGoalDisplay";
+import DailyGoalDisplay from "./DailyGoalDisplay";
 
 interface EditDailyGoalProps {
 	events: DailyGoal[];

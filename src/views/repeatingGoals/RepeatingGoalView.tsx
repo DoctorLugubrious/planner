@@ -8,13 +8,22 @@ import RepeatingGoal from "../../goalData/RepeatingGoal";
 
 
 export default class RepeatingGoalView extends React.Component<viewProps, viewState> {
+	private originalSize: number;
+
 	constructor(props: viewProps) {
 		super(props);
 		this.listener = new Listener(this);
+
+		this.originalSize = props.model.repeatingGoals.length;
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
+		let newSize = nextProps.model.repeatingGoals.length;
+		if (newSize === this.originalSize) {
+			return false;
+		}
+
+		this.originalSize = newSize;
 		return true;
 	}
 

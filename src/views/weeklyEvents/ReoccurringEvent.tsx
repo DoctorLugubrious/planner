@@ -1,13 +1,13 @@
 import React from "react";
 import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
 
-interface reoccuringEventProps {
+interface reoccurringEventProps {
 	event: ReoccurringWeeklyEvent;
 	index: number;
 	deleteEvent: (event: ReoccurringWeeklyEvent) => void;
 }
 
-let ReoccurringEvent =(props: reoccuringEventProps) => {
+let ReoccurringEvent = (props: reoccurringEventProps) => {
 	let days = "";
 	let event = props.event;
 

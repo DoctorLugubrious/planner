@@ -13,7 +13,7 @@ import YearlyView from './views/goals/Yearly'
 import DecomposeView from './views/decompose/Decompose'
 import MonthlyView from './views/goals/Monthly'
 import RepeatingGoalView from './views/repeatingGoals/RepeatingGoalView'
-import WeekyGoalsView from './views/Week/WeeklyGoals'
+import WeeklyGoalsView from './views/Week/WeeklyGoals'
 import DailyEvents from './views/dailyPlan/DailyEvents'
 import Model from './model/Model'
 import {ViewType} from "./views/ViewTypes";
@@ -22,8 +22,9 @@ import ChangePasswordView from "./views/user/ChangePassword";
 import EditScheduledEvent from "./views/scheduledEvents/EditScheduledEvent";
 import Header from "./views/page/header/header";
 import Footer from "./views/page/footer/footer";
+import ErrorView from "./views/error/ErrorView";
 
-class App extends React.Component {
+class App extends React.Component<{}, { view: ViewType }> {
 	state: { view: ViewType };
 	private readonly model: Model;
 
@@ -33,6 +34,10 @@ class App extends React.Component {
 			view: ViewType.LOGIN,
 		};
 		this.model = new Model(this.setView)
+	}
+
+	shouldComponentUpdate(nextProps: Readonly<{}>, nextState: Readonly<{ view: ViewType }>, nextContext: any): boolean {
+		return nextState.view !== this.state.view;
 	}
 
 	getView() {
@@ -64,7 +69,7 @@ class App extends React.Component {
 			case ViewType.CONTINUOUS:
 				return <RepeatingGoalView model={this.model}/>;
 			case ViewType.WEEKLY_GOALS:
-				return <WeekyGoalsView model={this.model}/>;
+				return <WeeklyGoalsView model={this.model}/>;
 			case ViewType.ADD_SCHEDULED_EVENT:
 				return <AddScheduledEventView model={this.model}/>;
 			case ViewType.CHANGE_PASSWORD:
@@ -79,6 +84,7 @@ class App extends React.Component {
 	render() {
 		return <div>
 			<Header username={this.model.username}/>
+			<ErrorView message={this.model.errorMessage}/>
 			{this.getView()}
 			<Footer view={this.state.view}/>
 		</div>

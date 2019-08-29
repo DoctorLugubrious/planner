@@ -10,21 +10,30 @@ import GoalDecomposeList from "./GoalDecomposeList";
 
 export default class DecomposeView extends React.Component<viewProps, viewState> {
 
-	constructor(props: viewProps) {
-		super(props);
-		this.state = {
-			model: props.model,
-		};
-		this.listener = new Listener(this);
-	}
+	private originalGoalName: string;
 
 
 	listener: Listener;
 
 	state: viewState;
 
+	constructor(props: viewProps) {
+		super(props);
+		this.state = {
+			model: props.model,
+		};
+		this.listener = new Listener(this);
+
+		this.originalGoalName = props.model.currentGoal.name;
+	}
+
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
+		let newName = nextProps.model.currentGoal.name;
+		if (newName === this.originalGoalName) {
+			return false;
+		}
+
+		this.originalGoalName = newName;
 		return true;
 	}
 

@@ -9,16 +9,24 @@ import GoalList from "./GoalList";
 
 export default class MonthlyView extends React.Component<viewProps, viewState> {
 
+	private originalSize: number;
+
 	constructor(props:viewProps) {
 		super(props);
 		this.listener = new Listener(this);
+
+		this.originalSize = props.model.monthlyGoals.size;
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
+		let newSize = nextProps.model.monthlyGoals.size;
+		if (newSize === this.originalSize) {
+			return false;
+		}
+
+		this.originalSize = newSize;
 		return true;
 	}
-
 
 	listener: Listener;
 

@@ -36,10 +36,6 @@ export default class LoginView extends React.Component<viewProps, viewState> {
 	};
 
 
-	notifyLoginFail = () => {
-		alert("LOGIN FAILED");
-	};
-
 	login = () => {
 		this.state.model.login(this.username, this.password);
 	};

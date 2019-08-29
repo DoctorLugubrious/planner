@@ -1,11 +1,7 @@
 
 
 export default class ServerResponse<T> {
-	setData(data: T) {
-		this._data = data;
-		this._error = null;
-		this._isError = false;
-	}
+	private _error: string = "";
 
 	setError(error: string) {
 		this._error = error;
@@ -17,7 +13,7 @@ export default class ServerResponse<T> {
 		return this._data;
 	}
 
-	get error(): string | null {
+	get error(): string {
 		return this._error;
 	}
 
@@ -26,6 +22,11 @@ export default class ServerResponse<T> {
 	}
 
 	private _data: T|null = null;
-	private _error: string|null = null;
+
+	setData(data: T) {
+		this._data = data;
+		this._error = "";
+		this._isError = false;
+	}
 	private _isError: boolean = false;
 }

@@ -113,7 +113,7 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 			this.addItem(FormatTime(value.date, true), value, schedule);
 		});
 
-		this.props.model.weeklyEvents.forEach(value => {
+		this.props.model.getWeeklyEventsForDate().forEach(value => {
 			this.addItem(value.start, value, schedule);
 		});
 

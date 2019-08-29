@@ -3,7 +3,7 @@ import viewProps from "../data/viewProps";
 import {ViewType} from "../ViewTypes";
 import Listener from "../Listener";
 import {viewState} from "../data/viewState";
-import DailyScheduleBody from "../schedule/DailyScheduleBody";
+import DailyScheduleBody from "./DailyScheduleBody";
 
 
 export default class DailyScheduleView extends React.Component<viewProps, viewState> {

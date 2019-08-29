@@ -24,20 +24,7 @@ export default class Model {
 		return this._date;
 	}
 
-	set date(value: Date) {
-		this._date = value;
-		this.server.getDate(this.auth, value).then(value1 => {
-			if (value1.data !== null) {
-				this.user.dailyGoals.set(FormatDate(value), value1.data.goals);
-				this.user.events.set(FormatDate(value), value1.data.events);
-				this.emitEvent();
-			}
-			else {
-				console.log(value1.error);
-			}
-		});
-
-	}
+	errorMessage: string = "";
 
 	resetDate() {
 		this._date = new Date();
@@ -57,6 +44,29 @@ export default class Model {
 	 currentlyWorking: GoalType = GoalType.LONG_TERM;
 	 currentGoal: goal = {name:""};
 	 currentRole: string = "";
+
+	constructor(changeView: (name: ViewType) => void) {
+		this.changeView = changeView;
+		this.server = new ServerProxy();
+
+		this.cookies = new Cookies();
+
+		let username: string = this.cookies.get(Model.usernameKey);
+		let token: string = this.cookies.get(Model.authKey);
+
+		this.user = new User("", "");
+		if (username != "" && token != "") {
+			this.server.sync({username: username, token: token}).then((res: ServerResponse<User>) => {
+				if (res.isError || res.data === null) {
+					this.postError("server did not accept token");
+				}
+				else {
+					this.user = res.data;
+					this.emitEvent();
+				}
+			});
+		}
+	}
 
 	 currentEvent: ScheduledEvent = {
 		 date: new Date(),
@@ -86,27 +96,19 @@ export default class Model {
 		}
 	};
 
-	constructor(changeView: (name: ViewType) => void) {
-		this.changeView = changeView;
-		this.server = new ServerProxy();
+	set date(value: Date) {
+		this._date = value;
+		this.server.getDate(this.auth, value).then(value1 => {
+			if (value1.data !== null) {
+				this.user.dailyGoals.set(FormatDate(value), value1.data.goals);
+				this.user.events.set(FormatDate(value), value1.data.events);
+				this.emitEvent();
+			}
+			else {
+				this.postError(value1.error);
+			}
+		});
 
-		this.cookies = new Cookies();
-
-		let username: string = this.cookies.get(Model.usernameKey);
-		let token: string = this.cookies.get(Model.authKey);
-
-		this.user = new User("", "");
-		if (username != "" && token != "") {
-			this.server.sync({username: username, token: token}).then((res: ServerResponse<User>) => {
-				if (res.isError || res.data === null) {
-					console.log("server did not accept token");
-				}
-				else {
-					this.user = res.data;
-					this.emitEvent();
-				}
-			});
-		}
 	}
 
 	private updateAfterServer<T>(promise: Promise<ServerResponse<T>>,
@@ -116,35 +118,46 @@ export default class Model {
 		promise.then((value => this.processResult(value, errorMessage, key)));
 	}
 
-	private updateAfterDecompose(promise: Promise<ServerResponse<DecomposeResult>>) {
-		promise.then(value => {
+////////////////////////	DAILY
+	updateAfterDailyGoal = (result: Promise<ServerResponse<Map<string, DailyGoal[]>>>) => {
+		result.then(value => {
 			if (value.data != null) {
-				this.user.weeklyGoals = value.data.weekly;
-				this.user.monthlyGoals = value.data.monthly;
-				this.user.yearlyGoals = value.data.yearly;
-				this.user.longTermGoals = value.data.longTerm;
-				this.user.continuousGoals = value.data.continuous;
+				value.data.forEach((value: DailyGoal[], key: string) => {
+					this.user.dailyGoals.set(key, value);
+				});
+				this.emitEvent();
 			}
 			else {
-				console.log(value.error);
+				this.postError(value.error);
 			}
-		});
-	}
+		})
+	};
 
-	private processResult<T>(res: ServerResponse<T>, errorMessage: string, key: string) {
-
-		if (!res.isError && res.data !== null) {
-			if (this.user.hasOwnProperty(key)) {
-				(this.user as any)[key] = res.data;
+	addScheduledEvent = (event: ScheduledEvent) => {
+		this.server.addScheduledEvent(event, this.auth).then(value => {
+			if (value.data != null) {
+				value.data.forEach((value: ScheduledEvent[], key: string) => {
+					this.user.events.set(key, value);
+				});
 			}
 			else {
+				this.postError(value.error);
 			}
-			this.emitEvent();
-		} else {
-			//TODO show this on the UI
-			console.log(res.error);
-		}
-	}
+		})
+	};
+
+	deleteScheduledEvent = (event: ScheduledEvent) => {
+		this.server.deleteScheduledEvent(event, this.auth).then(value => {
+			if (value.data != null) {
+				value.data.forEach((value: ScheduledEvent[], key: string) => {
+					this.user.events.set(key, value);
+				});
+			}
+			else {
+				this.postError(value.error);
+			}
+		})
+	};
 
 
 ////////////////////////	LONG TERM
@@ -215,17 +228,16 @@ export default class Model {
 	get weeklyGoals(): Map<string, Goal[]> {
 		return this.user.weeklyGoals;
 	}
-////////////////////////	DAILY
-	updateAfterDailyGoal = (result: Promise<ServerResponse<Map<string, DailyGoal[]>>>) => {
-		result.then(value => {
+
+	updateScheduledEvent = (event: ScheduledEvent, oldName: string) => {
+		this.server.updateScheduledEvent(event, oldName, this.date, this.auth).then(value => {
 			if (value.data != null) {
-				value.data.forEach((value: DailyGoal[], key:string) => {
-					this.user.dailyGoals.set(key, value);
+				value.data.forEach((value: ScheduledEvent[], key: string) => {
+					this.user.events.set(key, value);
 				});
-				this.emitEvent();
 			}
 			else {
-				console.log(value.error);
+				this.postError(value.error);
 			}
 		})
 	};
@@ -245,7 +257,6 @@ export default class Model {
 	get dailyGoals(): DailyGoal[] {
 		let res: DailyGoal[] = [];
 
-		console.log();
 		let temp :DailyGoal[]|undefined = this.user.dailyGoals.get(FormatDate(this._date));
 		if (temp !== undefined) {
 			res = temp;
@@ -272,42 +283,40 @@ export default class Model {
 
 ////////////////////////	SCHEDULED
 
-	addScheduledEvent = (event: ScheduledEvent) => {
-		this.server.addScheduledEvent(event, this.auth).then(value => {
-			if (value.data != null) {
-				value.data.forEach((value: ScheduledEvent[], key:string) => {
-					this.user.events.set(key, value);
-				});
-			}
-			else {
-				console.log(value.error);
-			}
+////////////////////////	USER INFO
+	changePassword = (newPassword: string) => {
+		this.server.changePassword(this.username, this.auth, newPassword).then(() => {
+			this.emitEvent();
+			alert("PASSWORD CHANGED");
 		})
 	};
 
-	deleteScheduledEvent = (event: ScheduledEvent) => {
-		this.server.deleteScheduledEvent(event, this.auth).then(value => {
-			if (value.data != null) {
-				value.data.forEach((value: ScheduledEvent[], key:string) => {
-					this.user.events.set(key, value);
-				});
+	login = (username: string, password: string) => {
+		this.server.login(username, password).then((value: ServerResponse<User>) => {
+			if (value.isError) {
+				this.postError("LOGIN FALED");
 			}
 			else {
-				console.log(value.error);
+				// @ts-ignore
+				this.user = value.data;
+				this.setCookie(this.user.Auth);
+				this.emitEvent();
 			}
-		})
+		});
 	};
-	updateScheduledEvent = (event: ScheduledEvent, oldName: string) => {
-		this.server.updateScheduledEvent(event, oldName, this.date, this.auth).then(value => {
-			if (value.data != null) {
-				value.data.forEach((value: ScheduledEvent[], key:string) => {
-					this.user.events.set(key, value);
-				});
+
+	register = (username: string, password: string) => {
+		this.server.register(username, password).then((value: ServerResponse<User>) => {
+			if (value.isError) {
+				this.postError("REGISTER FALED");
 			}
 			else {
-				console.log(value.error);
+				// @ts-ignore
+				this.user = value.data;
+				this.setCookie(this.user.Auth);
+				this.emitEvent();
 			}
-		})
+		});
 	};
 	get scheduledEvents(): ScheduledEvent[] {
 		let res = this.user.events.get(FormatDate(this._date));
@@ -358,39 +367,40 @@ export default class Model {
 		return this.user.roles;
 	}
 
-////////////////////////	USER INFO
-	changePassword = (newPassword: string) => {
-		this.server.changePassword(this.username, this.auth, newPassword).then(() => {
+	private updateAfterDecompose(promise: Promise<ServerResponse<DecomposeResult>>) {
+		promise.then(value => {
+			if (value.data != null) {
+				this.user.weeklyGoals = value.data.weekly;
+				this.user.monthlyGoals = value.data.monthly;
+				this.user.yearlyGoals = value.data.yearly;
+				this.user.longTermGoals = value.data.longTerm;
+				this.user.continuousGoals = value.data.continuous;
+			}
+			else {
+				this.postError(value.error);
+			}
+		});
+	}
+
+	private postError(message: string) {
+		this.errorMessage = message;
+		setTimeout(() => this.errorMessage = "", 2000);
+	}
+
+	private processResult<T>(res: ServerResponse<T>, errorMessage: string, key: string) {
+
+		if (!res.isError && res.data !== null) {
+			if (this.user.hasOwnProperty(key)) {
+				(this.user as any)[key] = res.data;
+			}
+			else {
+			}
 			this.emitEvent();
-			//TODO do something here
-		})
-	};
-	login = (username: string, password: string) => {
-		this.server.login(username, password).then((value: ServerResponse<User>) => {
-			if (value.isError) {
-				console.log("LOGIN FALED");
-			}
-			else {
-				// @ts-ignore
-				this.user = value.data;
-				this.setCookie(this.user.Auth);
-				this.emitEvent();
-			}
-		});
-	};
-	register = (username: string, password: string) => {
-		this.server.register(username, password).then((value: ServerResponse<User>) => {
-			if (value.isError) {
-				console.log("REGISTER FALED");
-			}
-			else {
-				// @ts-ignore
-				this.user = value.data;
-				this.setCookie(this.user.Auth);
-				this.emitEvent();
-			}
-		});
-	};
+		}
+		else {
+			this.postError(errorMessage + " " + res.error);
+		}
+	}
 	get username() :string {
 		return this.user.username;
 	}

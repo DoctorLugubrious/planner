@@ -32,10 +32,6 @@ export default class AddScheduledEventView extends React.Component<viewProps, Sc
 		})
 	};
 
-	beginEdit = (event: ScheduledEvent|null) => {
-		this.setState({editing: event});
-	};
-
 
 	private name: string = "";
 	private date: string = "";

@@ -78,7 +78,7 @@ export interface ServerInterface {
 	/*CHANGE PASSWORD*/
 	changePassword: (username: string, auth: Auth, newPassword: string) => Promise<ServerResponse<User>>;
 
-	/*SYNC WHEN LOGGIN IN*/
+	/*SYNC WHEN LOGGIN' IN*/
 	sync: (auth: Auth) => Promise<ServerResponse<User>>;
 
 	getDate: (auth: Auth, date: Date)=>Promise<ServerResponse<DateData>>;

@@ -1,36 +1,21 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import goal from "../../goalData/Goal";
 import {GoalType} from "../../goalData/GoalType";
+import AddGoal from "./AddGoal";
 
 interface GoalListProps {
 	goals: Map<string, goal[]>;
 	type: GoalType;
 	decompose: (goal: goal, type: GoalType, role: string) => void;
 	delete: (role:string, name: string) => void;
+	optionalButton: (goal: goal, role: string) => JSX.Element | null;
 	add: (name: goal, role: string) => void;
 	roles: string[];
-	optionalButton : (goal: goal, role: string) => JSX.Element|null;
 }
-//TODO decompose this into multiple types
+
 export default class GoalList extends React.Component<GoalListProps, {}> {
 
-	changeNew = (e: ChangeEvent<HTMLInputElement>) => {
-		this.current = e.target.value;
-	};
-
-	changeRole = (e:ChangeEvent<HTMLSelectElement>) => {
-	  this.role = e.target.value;
-	};
-
-	current: string = "";
-	role: string = this.props.roles[0];
-
 	render() {
-
-		if (this.props.roles.length === 0){
-			return (<div>CREATE SOME GOALS, n00b!</div>);
-		}
-
 		let goals: JSX.Element[] = [];
 
 		this.props.goals.forEach((value: goal[], key: string) => {
@@ -54,16 +39,8 @@ export default class GoalList extends React.Component<GoalListProps, {}> {
 		});
 
 		return (<div>
+			<AddGoal add={this.props.add} roles={this.props.roles}/>
 			{goals}
-			<input type="text" onChange={this.changeNew} id="newInput"/>
-			<select onChange={this.changeRole}>
-				{this.props.roles.map((role: string) =>
-					<option value={role} key={role}>{role}</option>
-				)}
-			</select>
-			<button onClick={() => {
-				this.props.add({name: this.current}, this.role);
-			}}>ADD</button>
 		</div>);
 	}
 };

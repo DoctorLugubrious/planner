@@ -8,16 +8,24 @@ import ChangeViewButton from "./buttons/ChangeViewButton";
 
 export default class MainView extends React.Component<viewProps, viewState> {
 
-	constructor(props:viewProps) {
-		super(props);
-		this.listener = new Listener(this);
-	}
+	private originalLogin: Date;
 
 
 	listener: Listener;
 
+	constructor(props:viewProps) {
+		super(props);
+		this.listener = new Listener(this);
+		this.originalLogin = new Date(props.model.lastLogin);
+	}
+
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
+		let lastLogin = nextProps.model.lastLogin;
+		if (lastLogin === this.originalLogin) {
+			return false;
+		}
+
+		this.originalLogin = lastLogin;
 		return true;
 	}
 

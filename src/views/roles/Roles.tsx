@@ -8,19 +8,28 @@ import StringInput from "../input/StringInput";
 
 export default class RolesView extends React.Component<viewProps, viewState> {
 
+	private originalSize: number;
+
 	constructor(props:viewProps) {
 		super(props);
 		this.listener = new Listener(this);
-	}
 
-	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
-		return true;
+		this.originalSize = props.model.roles.length;
 	}
 
 	addRoles = (newRole: string) => {
 		this.props.model.addRole(newRole);
 	};
+
+	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
+		let newSize = nextProps.model.roles.length;
+		if (newSize === this.originalSize) {
+			return false;
+		}
+
+		this.originalSize = newSize;
+		return true;
+	}
 
 	listener: Listener;
 

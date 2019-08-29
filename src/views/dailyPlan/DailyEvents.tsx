@@ -3,18 +3,24 @@ import viewProps from "../data/viewProps";
 import {ViewType} from "../ViewTypes";
 import {viewState} from "../data/viewState";
 import Listener from "../Listener";
-import DailyScheduleBody from "../schedule/DailyScheduleBody";
+import DailyScheduleBody from "../DailySchedule/DailyScheduleBody";
 import EditDailyGoals from "./EditDailyGoals";
 
 
 export default class DailyPlanView extends React.Component<viewProps, viewState> {
-	constructor(props: viewProps) {
-		super(props);
-		this.listener = new Listener(this);
-	}
+	private originalUnassigned: number;
 
 
 	listener: Listener;
+	private originalAssigned: number;
+
+	constructor(props: viewProps) {
+		super(props);
+		this.listener = new Listener(this);
+
+		this.originalUnassigned = this.getUnassignedEvents().length;
+		this.originalAssigned = this.getAssignedEvents().length;
+	}
 
 	getUnassignedEvents() {
 		return this.state.model.dailyGoals.filter((event :any) => (event.start === ""));
@@ -25,11 +31,18 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 	}
 
 	onItemClick = (name: string, start: string, len: number) => {
-		//TODO fix this
 		this.state.model.updateDailyGoal({name: name, start: start, len: len, completed: false}, name);
 	};
+
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
+		let newAssigned = this.getAssignedEvents().length;
+		let newUnassigend = this.getUnassignedEvents().length;
+		if (newAssigned === this.originalAssigned && newUnassigend === this.originalUnassigned) {
+			return false;
+		}
+
+		this.originalUnassigned = newUnassigend;
+		this.originalAssigned = newAssigned;
 		return true;
 	}
 

@@ -8,14 +8,22 @@ import {GoalType} from "../../goalData/GoalType";
 import AssignWeekly from "./AssignWeekly";
 
 
-export default class WeekyGoalsView extends React.Component<viewProps, viewState> {
+export default class WeeklyGoalsView extends React.Component<viewProps, viewState> {
+	private originalSize: number;
+
 	constructor(props: viewProps) {
 		super(props);
 		this.listener = new Listener(this);
+		this.originalSize = props.model.weeklyGoals.size;
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		//TODO check model
+		let newSize = nextProps.model.weeklyGoals.size;
+		if (newSize === this.originalSize) {
+			return false;
+		}
+
+		this.originalSize = newSize;
 		return true;
 	}
 
