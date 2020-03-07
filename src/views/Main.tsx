@@ -31,21 +31,22 @@ export default class MainView extends React.Component<viewProps, viewState> {
 
 	render = () => {
 		const lastLogin = this.state.model.lastLogin;
+
 		const today = new Date();
 		const weeklyPlan : ViewType = lastLogin.getMonth() !== today.getMonth() ? ViewType.YEARLY : ViewType.MONTHLY;
 		return (<div>
 			<p>MAIN VIEW, last logged in {this.state.model.lastLogin + ""}</p>
 			<ul>
 				<li><button onClick={() => this.state.model.changeView(ViewType.ROLES)}>Roles</button></li>
-				<li><button onClick={() => this.state.model.changeView(weeklyPlan)}>Weekly plan (goes to {ViewType[weeklyPlan]} screen)</button></li>
-				<li><button onClick={() => this.state.model.changeView(ViewType.DAILY_EVENTS)}>Daily Plan</button></li>
+				<li><button onClick={() => this.state.model.changeView(weeklyPlan)}>Weekly Plan</button></li>
+				<li><button onClick={() => this.state.model.changeView(ViewType.DAILY_PLAN)}>Daily Plan</button></li>
 				<li><button onClick={() => {
 					this.state.model.resetDate();
 					this.state.model.changeView(ViewType.DAILY_SCHEDULE)
 				}}>Day</button></li>
 				<li><button onClick={() => this.state.model.changeView(ViewType.LONG_TERM_GOALS)}>Edit Long-Term Goals</button></li>
 				<li><button onClick={() => this.state.model.changeView(ViewType.WEEKLY_EVENTS)}>Weekly Schedule</button></li>
-				<li><ChangeViewButton model={this.state.model} view={ViewType.ADD_SCHEDULED_EVENT} text="Scheduled Events"/></li>
+				<li><ChangeViewButton model={this.state.model} view={ViewType.ADD_SCHEDULED_EVENT} text="Add Scheduled Event"/></li>
 				<li><ChangeViewButton model={this.state.model} view={ViewType.CHANGE_PASSWORD} text="Change Password"/></li>
 			</ul>
 		</div>);

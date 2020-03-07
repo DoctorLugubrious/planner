@@ -22,7 +22,12 @@ export default class LoginView extends React.Component<viewProps, viewState> {
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
 		if (this.state.model.username !== "") {
-			this.state.model.changeView(ViewType.MAIN);
+			if (this.state.model.firstLogin) {
+				this.state.model.changeView(ViewType.TUTORIAL);
+			}
+			else {
+				this.state.model.changeView(ViewType.MAIN);
+			}
 		}
 		return true;
 	}

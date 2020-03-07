@@ -4,6 +4,6 @@ import {GoalWithType} from "../../goalData/GoalWithType";
 import ServerResponse from "../responseData/ServerResponse";
 import DecomposeResult from "../responseData/DecomposeResult";
 
-export type decomposeGoalFunction = (auth: Auth, role: string, goal: Goal, goals: GoalWithType[])
+export type decomposeGoalFunction = (auth: Auth, role: string, goal: Goal, goals: GoalWithType[], keep: boolean)
 	=> Promise<ServerResponse<DecomposeResult>>;
 

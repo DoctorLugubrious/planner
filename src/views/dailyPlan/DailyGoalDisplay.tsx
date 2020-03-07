@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react'
-import FormatTime from "../../utility/datesAndTimes/FormatTime";
+import {FormatTime, Time12to24} from "../../utility/datesAndTimes/FormatTime";
 import DailyGoal from "../../goalData/DailyGoal";
 
 interface GoalProps {
@@ -18,7 +18,7 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 	constructor(props: GoalProps) {
 		super(props);
 
-		let time = props.goal.start.substr(0, 5);
+		let time = Time12to24(props.goal.start);
 
 
 		if (props.goal.len !== undefined) {
@@ -69,8 +69,8 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 					{assignName}
 				</button>
 				<button onClick={props.deleteGoal}>
-					delete
-				</button>
+						delete
+					</button>
 			</li>
 		);
 	}

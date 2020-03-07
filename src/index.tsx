@@ -23,6 +23,7 @@ import EditScheduledEvent from "./views/scheduledEvents/EditScheduledEvent";
 import Header from "./views/page/header/header";
 import Footer from "./views/page/footer/footer";
 import ErrorView from "./views/error/ErrorView";
+import TutorialView from "./views/TutorialView";
 
 class App extends React.Component<{}, { view: ViewType }> {
 	state: { view: ViewType };
@@ -46,7 +47,7 @@ class App extends React.Component<{}, { view: ViewType }> {
 				return <CalendarView model={this.model}/>;
 			case ViewType.DAILY_SCHEDULE:
 				return <DailySchedule model={this.model}/>;
-			case ViewType.DAILY_EVENTS:
+			case ViewType.DAILY_PLAN:
 				return <DailyEvents model={this.model}/>;
 			case ViewType.LONG_TERM_GOALS:
 				return <LongTermGoalsView model={this.model}/>;
@@ -76,6 +77,8 @@ class App extends React.Component<{}, { view: ViewType }> {
 				return <ChangePasswordView model={this.model}/>;
 			case ViewType.EDIT_SCHEDULED_EVENT:
 				return <EditScheduledEvent model={this.model}/>;
+			case ViewType.TUTORIAL:
+				return <TutorialView model={this.model}/>;
 			default:
 				return <p>VIEW {this.state.view} NOT FOUND</p>
 		}
@@ -84,7 +87,7 @@ class App extends React.Component<{}, { view: ViewType }> {
 	render() {
 		return <div>
 			<Header username={this.model.username}/>
-			<ErrorView message={this.model.errorMessage}/>
+			<ErrorView model={this.model}/>
 			{this.getView()}
 			<Footer view={this.state.view}/>
 		</div>

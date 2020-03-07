@@ -36,12 +36,12 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
 		let newAssigned = this.getAssignedEvents().length;
-		let newUnassigend = this.getUnassignedEvents().length;
-		if (newAssigned === this.originalAssigned && newUnassigend === this.originalUnassigned) {
+		let newUnassigned = this.getUnassignedEvents().length;
+		if (newAssigned === this.originalAssigned && newUnassigned === this.originalUnassigned) {
 			return false;
 		}
 
-		this.originalUnassigned = newUnassigend;
+		this.originalUnassigned = newUnassigned;
 		this.originalAssigned = newAssigned;
 		return true;
 	}
@@ -79,8 +79,12 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 					detailed={false}
 					model={this.props.model}/>
 
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>Back to Main</button>
+			<button onClick={() => {
+				this.state.model.resetDate();
+				this.state.model.changeView(ViewType.MAIN)
+			}}>Back to Main</button>
 			<button onClick={() => this.state.model.changeView(ViewType.DAILY_SCHEDULE)}>Schedule</button>
+			<button onClick={() => this.state.model.changeView(ViewType.CALENDAR)}>Calendar</button>
 			</div>
 		);
 	}

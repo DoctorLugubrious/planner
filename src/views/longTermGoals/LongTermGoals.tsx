@@ -5,27 +5,31 @@ import Listener from "../Listener";
 import {viewState} from "../data/viewState";
 import GoalList from "../goals/GoalList";
 import {GoalType} from "../../goalData/GoalType";
+import DeepCopy from "../../utility/objects/DeepCopy";
 
 
 export default class LongTermGoalsView extends React.Component<viewProps, viewState> {
 
-	private originalSize: number;
+	private originalGoals: string;
 
 	constructor(props: viewProps) {
 		super(props);
 		this.listener = new Listener(this);
 
-		this.originalSize = props.model.longTermGoals.size;
+		this.originalGoals = DeepCopy(props.model.longTermGoals);
 	}
 
 	listener: Listener;
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		if (this.originalSize !== nextProps.model.longTermGoals.size) {
-			this.originalSize = nextProps.model.longTermGoals.size;
-			return true;
+		let newGoals = DeepCopy(nextProps.model.longTermGoals);
+		if (newGoals === this.originalGoals) {
+			console.log("not rerendering", newGoals, this.originalGoals);
+			return false;
 		}
-		return false;
+
+		this.originalGoals = newGoals;
+		return true;
 	}
 
 	render = () => {

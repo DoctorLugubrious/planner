@@ -2,7 +2,7 @@ import * as React from "react";
 import {ChangeEvent} from "react";
 import {ScheduledEvent} from "../../goalData/ScheduledEvent";
 import FormatDate from "../../utility/datesAndTimes/FormatDate";
-import FormatTime from "../../utility/datesAndTimes/FormatTime";
+import {FormatTime} from "../../utility/datesAndTimes/FormatTime";
 
 interface ScheduledEventProps {
 	post: (event: ScheduledEvent, oldName: string) => void;

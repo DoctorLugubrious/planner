@@ -1,6 +1,8 @@
 import React, {ChangeEvent} from 'react'
 import viewProps from "../data/viewProps";
 import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
+import FormatDate from "../../utility/datesAndTimes/FormatDate";
+import {FormatTimeFromString} from "../../utility/datesAndTimes/FormatTime";
 
 interface WeeklyEventViewProps extends viewProps {
 	onSubmit ?: () => void;
@@ -10,8 +12,8 @@ interface WeeklyEventViewProps extends viewProps {
 interface WeeklyEventViewState {
 	name: string;
 	days: string[];
-	start: string;
 	len: number;
+	start: string;
 }
 
 export default class WeeklyEventView extends React.Component<WeeklyEventViewProps, WeeklyEventViewState> {
@@ -24,16 +26,16 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 			this.state = {
 				name: props.event.name,
 				days: props.event.days,
-				start: props.event.start.split("am")[0].split("pm")[0],
-				len: props.event.len
+				len: props.event.len,
+				start: props.event.start,
 			}
 		}
 		else {
 			this.state = {
 				name: "",
 				days: [],
+				len: 0,
 				start: "",
-				len: 0
 			};
 		}
 	}
@@ -54,6 +56,8 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 	};
 
 	changeStart = (e: ChangeEvent<HTMLInputElement>) => {
+
+		console.log(e.target.value);
 		this.setState({start: e.target.value});
 	};
 
@@ -72,13 +76,11 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 			name: this.state.name,
 			days: this.state.days,
 			len: this.state.len,
-			start: this.state.start + "am"
+			start: FormatTimeFromString(this.state.start, true)
 		};
 
 
-		if (this.props.onSubmit) {
-			this.props.onSubmit();
-		}
+
 		if (this.add) {
 			this.props.model.addWeeklyEvent(result);
 			this.setState({
@@ -91,6 +93,10 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 		else {
 			// @ts-ignore
 			this.props.model.updateWeeklyEvent(result, this.props.event.name);
+		}
+
+		if (this.props.onSubmit) {
+			this.props.onSubmit();
 		}
 	};
 
@@ -120,4 +126,3 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 		</div>);
 	}
 }
-	

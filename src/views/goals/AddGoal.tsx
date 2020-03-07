@@ -33,7 +33,7 @@ export default class AddGoal extends React.Component<AddGoalProps, AddGoalState>
 			<input type="text" onChange={this.changeNew} id="newInput"/>
 			<select onChange={this.changeRole}>
 				{this.props.roles.map((role: string) =>
-					                      <option value={role} key={role}>{role}</option>
+					role != "Reoccurring" ? <option value={role} key={role}>{role}</option> : null
 				)}
 			</select>
 			<button onClick={() => {

@@ -24,7 +24,7 @@ export default class EnumSelect extends React.Component<EnumSelectProps, {}> {
 	};
 
 	render = () => {
-		return (<select onChange={this.onChange}>
+		return (<select onChange={this.onChange} value={this.props.container.enumResult}>
 			{this.mapEnum(this.props.type, (type: string) => {
 				return (<option key={type}>
 					{type}

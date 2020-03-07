@@ -17,7 +17,6 @@ export default class GoalList extends React.Component<GoalListProps, {}> {
 
 	render() {
 		let goals: JSX.Element[] = [];
-
 		this.props.goals.forEach((value: goal[], key: string) => {
 			goals.push(<div key={key}>
 				<h2>{key}</h2>

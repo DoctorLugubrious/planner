@@ -5,26 +5,27 @@ import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import {GoalType} from "../../goalData/GoalType";
 import GoalList from "./GoalList";
+import DeepCopy from "../../utility/objects/DeepCopy";
 
 
 export default class MonthlyView extends React.Component<viewProps, viewState> {
 
-	private originalSize: number;
+	private originalGoals: string;
 
 	constructor(props:viewProps) {
 		super(props);
 		this.listener = new Listener(this);
 
-		this.originalSize = props.model.monthlyGoals.size;
+		this.originalGoals = DeepCopy(props.model.monthlyGoals);
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		let newSize = nextProps.model.monthlyGoals.size;
-		if (newSize === this.originalSize) {
+		let newGoals = DeepCopy(nextProps.model.monthlyGoals);
+		if (newGoals === this.originalGoals) {
 			return false;
 		}
 
-		this.originalSize = newSize;
+		this.originalGoals = newGoals;
 		return true;
 	}
 

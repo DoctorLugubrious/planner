@@ -12,9 +12,6 @@ interface WeeklyEventsViewState extends viewState {
 
 export default class WeeklyEventsView extends React.Component<viewProps, WeeklyEventsViewState> {
 
-	private originalSize: number;
-
-
 	listener: Listener;
 
 	constructor(props:viewProps) {
@@ -24,17 +21,6 @@ export default class WeeklyEventsView extends React.Component<viewProps, WeeklyE
 			model: props.model,
 			editingName: "",
 		};
-		this.originalSize = props.model.weeklyEvents.length;
-	}
-
-	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		let newSize = nextProps.model.weeklyEvents.length;
-		if (newSize === this.originalSize) {
-			return false;
-		}
-
-		this.originalSize = newSize;
-		return true;
 	}
 
 
@@ -64,7 +50,7 @@ export default class WeeklyEventsView extends React.Component<viewProps, WeeklyE
 						</div>);
 					}
 
-					return <li key={index}>
+					return <li key={"item" + index}>
 						{result}
 					</li>
 				})}

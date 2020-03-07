@@ -5,7 +5,7 @@ import {ScheduledEvent} from "../../goalData/ScheduledEvent";
 import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
 import {viewState} from "../data/viewState";
 import DailyGoalView from "./DailyGoalView";
-import FormatTime from "../../utility/datesAndTimes/FormatTime";
+import {FormatTime} from "../../utility/datesAndTimes/FormatTime";
 import pad from "../../utility/numbers/Pad";
 import ScheduledEventInfo from "../scheduledEvents/ScheduledEventInfo";
 import Model from "../../model/Model";
@@ -105,15 +105,18 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 			addAllMinutes(schedule, hour, 'pm');
 		}
 
-		this.props.model.dailyGoals.forEach(value => {
-			this.addItem(value.start, value, schedule);
-		});
+
 
 		this.props.model.scheduledEvents.forEach(value => {
+			console.log("adding event", value.name, "at time", FormatTime(value.date, true));
 			this.addItem(FormatTime(value.date, true), value, schedule);
 		});
 
 		this.props.model.getWeeklyEventsForDate().forEach(value => {
+			this.addItem(value.start, value, schedule);
+		});
+
+		this.props.model.dailyGoals.forEach(value => {
 			this.addItem(value.start, value, schedule);
 		});
 
@@ -155,14 +158,14 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 
 	private addEventBlock(result: JSX.Element[], len: number | undefined) {
 		let itemStyle = generateGridStyle("event", this.eventIndex);
-		result.push(<div style={itemStyle} className="block"><p></p></div>);
+		result.push(<div style={itemStyle} className="block" key={this.eventIndex}><p></p></div>);
 		this.updateGridItem(itemStyle, {len});
 	}
 
 	private addEventDetailed(event: DailyGoal | ScheduledEvent | ReoccurringWeeklyEvent, result: JSX.Element[]) {
 		if (event.hasOwnProperty("completed")) {
 			let itemStyle = generateGridStyle("event", this.eventIndex);
-			result.push(<div style={itemStyle}><DailyGoalView
+			result.push(<div style={itemStyle} key={this.eventIndex}><DailyGoalView
 				event={event as DailyGoal}
 				complete={this.props.model.updateDailyGoal}
 			/></div>);
@@ -178,7 +181,7 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 
 			this.updateGridItem(itemStyle, event);
 		}
-		else if (event.hasOwnProperty("date")) {
+		else {
 			let itemStyle = generateGridStyle("event", this.eventIndex);
 			result.push(<div style={itemStyle} key={itemStyle.gridArea}>
 				{event.name}
@@ -224,7 +227,6 @@ export default class DailyScheduleBody extends React.Component<DailyScheduleBody
 		let result: JSX.Element[] = [];
 
 		this.generateGridElements(schedule, result);
-
 		let mainStyle = {
 			display: 'grid',
 			gridTemplateAreas: this.gridString,

@@ -5,26 +5,27 @@ import {ViewType} from "../ViewTypes";
 import {GoalType} from "../../goalData/GoalType";
 import {viewState} from "../data/viewState";
 import Listener from "../Listener";
+import DeepCopy from "../../utility/objects/DeepCopy";
 
 
 export default class YearlyView extends React.Component<viewProps, viewState> {
 
-	private originalSize: number;
+	private originalGoals: string;
 
 	constructor(props:viewProps) {
 		super(props);
 		this.listener = new Listener(this);
 
-		this.originalSize = props.model.yearlyGoals.size;
+		this.originalGoals = DeepCopy(props.model.yearlyGoals);
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		let newSize = nextProps.model.yearlyGoals.size;
-		if (newSize === this.originalSize) {
+		let newGoals = DeepCopy(nextProps.model.yearlyGoals);
+		if (newGoals === this.originalGoals) {
 			return false;
 		}
 
-		this.originalSize = newSize;
+		this.originalGoals = newGoals;
 		return true;
 	}
 

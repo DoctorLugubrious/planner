@@ -14,14 +14,14 @@ export default class ChangePasswordView extends React.Component<viewProps, viewS
 
 	private listener: Listener;
 
-	setNewPassword(e: ChangeEvent<HTMLInputElement>) {
+	setNewPassword = (e: ChangeEvent<HTMLInputElement>) =>{
 		this.password = e.target.value;
-	}
+	};
 
-	submit() {
+	submit = () => {
 		this.state.model.changePassword(this.password);
 		this.state.model.changeView(ViewType.MAIN);
-	}
+	};
 
 	private password: string = "";
 

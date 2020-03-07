@@ -6,24 +6,20 @@ import Listener from "../Listener";
 import GoalList from "../goals/GoalList";
 import {GoalType} from "../../goalData/GoalType";
 import AssignWeekly from "./AssignWeekly";
+import WeeklyAssignedDays from "./WeeklyAssignedDays";
+import WeeklyReoccurringGoals from "./WeeklyReoccurringGoals";
+import RepeatingGoal from "../../goalData/RepeatingGoal";
+import {GoalFrequency} from "../../goalData/GoalFrequency";
 
 
 export default class WeeklyGoalsView extends React.Component<viewProps, viewState> {
-	private originalSize: number;
 
 	constructor(props: viewProps) {
 		super(props);
 		this.listener = new Listener(this);
-		this.originalSize = props.model.weeklyGoals.size;
 	}
 
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		let newSize = nextProps.model.weeklyGoals.size;
-		if (newSize === this.originalSize) {
-			return false;
-		}
-
-		this.originalSize = newSize;
 		return true;
 	}
 
@@ -41,11 +37,19 @@ export default class WeeklyGoalsView extends React.Component<viewProps, viewStat
 				roles={model.roles}
 				optionalButton={(goal, role) => {
 					return <AssignWeekly goal={goal} post={(goal, daily, date) => {
-							this.props.model.deleteWeeklyGoal(role, goal.name);
-							this.props.model.addDailyGoalForDate(date, daily);
-						}
+						this.props.model.assignWeeklyGoal(role, goal, date);
+					}
 				}/>
 			 }}/>
+			 <WeeklyReoccurringGoals goals={model.repeatingGoals.filter((value: RepeatingGoal) => {
+				    return value.frequency == GoalFrequency.WEEKLY
+				 })}
+                 post={(oldGoal, newGoal, date) => {
+                 	this.props.model.addDailyGoalForDate(date, newGoal);
+                 	this.props.model.hideRepeating(oldGoal.name);
+                 }}
+			 />
+			 <WeeklyAssignedDays model={this.state.model}/>
 			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>done</button>
 		</div>);
 	}

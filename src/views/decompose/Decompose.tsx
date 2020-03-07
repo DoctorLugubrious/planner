@@ -37,11 +37,11 @@ export default class DecomposeView extends React.Component<viewProps, viewState>
 		return true;
 	}
 
-	get decomposeFunction(): (goals: GoalWithType[]) => void {
+	get decomposeFunction(): (goals: GoalWithType[], keep: boolean) => void {
 		let model = this.state.model;
 		let type =  model.currentlyWorking;
 
-		let decomposeFunction: (goals: GoalWithType[]) => void = () => {};
+		let decomposeFunction: (goals: GoalWithType[], keep: boolean) => void = () => {};
 
 		switch (type) {
 			case GoalType.WEEKLY:
@@ -57,9 +57,8 @@ export default class DecomposeView extends React.Component<viewProps, viewState>
 				decomposeFunction = model.decomposeYearlyGoal;
 				break;
 		}
-		return (goals: GoalWithType[]) => {
-			console.log("DECOMPOSE CALLED");
-			decomposeFunction(goals);
+		return (goals: GoalWithType[], keep: boolean) => {
+			decomposeFunction(goals, keep);
 			DecomposeFinishFunction(this.state.model)();
 		}
 	}
@@ -75,6 +74,7 @@ export default class DecomposeView extends React.Component<viewProps, viewState>
 				from role {this.state.model.currentRole}
 			</p>
 			<GoalDecomposeList onFinish={this.decomposeFunction}/>
+			<button onClick={DecomposeFinishFunction(this.state.model)}>BACK</button>
 		</div>);
 	}
 }

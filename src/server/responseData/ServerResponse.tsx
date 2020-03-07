@@ -9,6 +9,15 @@ export default class ServerResponse<T> {
 		this._isError = true;
 	}
 
+	static fromObject<T>(obj: ServerResponse<T>) {
+		let result = new ServerResponse<T>();
+		result._error = obj._error;
+		result._data = obj._data;
+		result._isError = obj._isError;
+
+		return result;
+	}
+
 	get data(): T | null {
 		return this._data;
 	}

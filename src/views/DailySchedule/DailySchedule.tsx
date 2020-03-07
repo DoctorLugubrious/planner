@@ -29,8 +29,11 @@ export default class DailyScheduleView extends React.Component<viewProps, viewSt
 					detailed={true}
 				/>
 			</div>
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>Back to Main</button>
-			<button onClick={() => this.state.model.changeView(ViewType.DAILY_EVENTS)}>Plan</button>
+			<button onClick={() => {
+				this.state.model.resetDate();
+				this.state.model.changeView(ViewType.MAIN)
+			}}>Back to Main</button>
+			<button onClick={() => this.state.model.changeView(ViewType.DAILY_PLAN)}>Plan</button>
 			<button onClick={() => this.state.model.changeView(ViewType.CALENDAR)}>Calendar</button>
 		</div>
 		);
