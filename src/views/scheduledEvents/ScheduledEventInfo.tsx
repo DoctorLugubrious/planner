@@ -2,6 +2,7 @@ import * as React from "react";
 import Model from "../../model/Model";
 import {ScheduledEvent} from "../../goalData/ScheduledEvent";
 import {ViewType} from "../ViewTypes";
+import {FiEdit, FiTrash} from "react-icons/all";
 
 interface ScheduledEventInfoProps {
 	model: Model,
@@ -9,15 +10,15 @@ interface ScheduledEventInfoProps {
 }
 
 let ScheduledEventInfo = (props: ScheduledEventInfoProps) => {
-	return (<div>
+	return (<div className={'scheduleItem'}>
 		{props.event.name}
 		<button onClick={() => {
 			props.model.currentEvent = props.event;
 			props.model.changeView(ViewType.EDIT_SCHEDULED_EVENT)
-		}}>EDIT</button>
+		}}><FiEdit/></button>
 		<button onClick={() => {
 			props.model.deleteScheduledEvent(props.event)
-		}}>DELETE</button>
+		}} className={'deleteButton'}><FiTrash/></button>
 	</div>);
 };
 

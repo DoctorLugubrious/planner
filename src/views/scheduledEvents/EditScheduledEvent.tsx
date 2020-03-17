@@ -4,6 +4,7 @@ import * as React from "react";
 import Listener from "../Listener";
 import EditScheduledEventComponent from "./EditScheduledEventComponent";
 import {ViewType} from "../ViewTypes";
+import {FiArrowLeft, FiArrowRight} from "react-icons/all";
 
 export default class EditScheduledEvent extends React.Component<viewProps, viewState> {
 	constructor(props: viewProps) {
@@ -23,6 +24,7 @@ export default class EditScheduledEvent extends React.Component<viewProps, viewS
 				}}
 				text="EDIT"
 			event={this.state.model.currentEvent}/>
+			<button onClick={() => this.state.model.changeView(ViewType.DAILY_SCHEDULE)}><FiArrowLeft/></button>
 		</div>)
 	}
 

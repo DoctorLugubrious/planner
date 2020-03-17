@@ -7,6 +7,9 @@ import DecomposeFinishFunction from "./DecomposeFinishFunction";
 import {GoalWithType} from "../../goalData/GoalWithType";
 import GoalDecomposeList from "./GoalDecomposeList";
 
+import './decompose.css';
+import {FiArrowLeft} from "react-icons/all";
+
 
 export default class DecomposeView extends React.Component<viewProps, viewState> {
 
@@ -67,14 +70,9 @@ export default class DecomposeView extends React.Component<viewProps, viewState>
 
 
 	render = () => {
-		return (<div>
-			<p>Decompose
-				{" " + GoalType[this.state.model.currentlyWorking] + " "} goal
-				{" " + this.state.model.currentGoal.name + " "}
-				from role {this.state.model.currentRole}
-			</p>
+		return (<div className={'fullHeight'}>
+			<button onClick={DecomposeFinishFunction(this.state.model)}><FiArrowLeft/></button>
 			<GoalDecomposeList onFinish={this.decomposeFunction}/>
-			<button onClick={DecomposeFinishFunction(this.state.model)}>BACK</button>
 		</div>);
 	}
 }

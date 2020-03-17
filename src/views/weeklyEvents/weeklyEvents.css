@@ -1,0 +1,27 @@
+.weeklyEvent {
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.reoccurringEvent {
+    display: flex;
+}
+
+.eventItem {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 8px;
+    box-shadow: 1px 1px 4px black;
+}
+
+.reoccurringEvent {
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weeklyEvent button {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}

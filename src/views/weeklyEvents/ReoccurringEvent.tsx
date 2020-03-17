@@ -1,5 +1,6 @@
 import React from "react";
 import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
+import {FiTrash} from "react-icons/all";
 
 interface reoccurringEventProps {
 	event: ReoccurringWeeklyEvent;
@@ -8,14 +9,10 @@ interface reoccurringEventProps {
 }
 
 let ReoccurringEvent = (props: reoccurringEventProps) => {
-	let days = "";
 	let event = props.event;
 
-	for(let day of event.days) {
-		days += day;
-	}
-	return <div key={props.index}>{event.name} ({days} at {event.start})
-		<button onClick={() => props.deleteEvent(event)}>Delete</button>
+	return <div key={props.index} className={'reoccurringEvent'}>{event.name} ({event.start})
+		<button onClick={() => props.deleteEvent(event)} className={'deleteButton'}><FiTrash/></button>
 	</div>
 };
 

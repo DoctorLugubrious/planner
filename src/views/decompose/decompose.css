@@ -1,0 +1,58 @@
+.addDecompose {
+    display: flex;
+    justify-content: center;
+}
+
+.toCreateGoals {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    width: 70%;
+}
+
+.keepOriginal {
+    display: inline;
+}
+
+.toCreateGoals li {
+    display: flex;
+    width: 100%;
+    margin: 10px;
+    border-bottom: 1px solid white;
+    justify-content: space-between;
+}
+
+.toCreateName {
+    min-width: 70%;
+    font-size: 1.5em;
+}
+
+.goalType {
+    min-width: 20%;
+    text-align: end;
+    font-size: 0.7em;
+}
+
+.addDecompose button {
+    margin: 5px;
+}
+
+.finish {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px;
+}
+
+.decomposeGoals {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

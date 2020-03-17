@@ -6,6 +6,7 @@ import Listener from "../Listener";
 import {GoalType} from "../../goalData/GoalType";
 import GoalList from "./GoalList";
 import DeepCopy from "../../utility/objects/DeepCopy";
+import {FiArrowLeft, FiArrowRight} from "react-icons/fi"
 
 
 export default class MonthlyView extends React.Component<viewProps, viewState> {
@@ -33,7 +34,7 @@ export default class MonthlyView extends React.Component<viewProps, viewState> {
 
 	render = () => {
 		return(<div>
-			<p>Monthly View</p>
+			<h1>Monthly Goals</h1>
 			<GoalList
 				goals={this.state.model.monthlyGoals}
 				delete={this.state.model.deleteMonthlyGoal}
@@ -42,8 +43,10 @@ export default class MonthlyView extends React.Component<viewProps, viewState> {
 				roles={this.state.model.roles}
 			 	type={GoalType.MONTHLY}
 				optionalButton={() => null}/>
-
-			<button onClick={() => this.state.model.changeView(ViewType.CONTINUOUS)}>done</button>
+			<div style={{"display": "flex", "justifyContent": "space-between", "padding": "16px"}}>
+				<button onClick={() => this.state.model.changeView(ViewType.YEARLY)}><FiArrowLeft/></button>
+				<button onClick={() => this.state.model.changeView(ViewType.CONTINUOUS)}><FiArrowRight/></button>
+			</div>
 		</div>);
 	};
 

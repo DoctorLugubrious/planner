@@ -6,6 +6,7 @@ import EditScheduledEventComponent from "./EditScheduledEventComponent";
 import ChangeViewButton from "../buttons/ChangeViewButton";
 import {ViewType} from "../ViewTypes";
 import Listener from "../Listener";
+import {FiHome} from "react-icons/all";
 
 interface ScheduledEventsState extends viewState{
 	editing: ScheduledEvent|null;
@@ -42,14 +43,12 @@ export default class AddScheduledEventView extends React.Component<viewProps, Sc
 
 	render() {
 		let model = this.state.model;
-		return (<div>
+		return (<div className={'addScheduledEvent'}>
+			<ChangeViewButton model={this.state.model} view={ViewType.MAIN} text={<FiHome/>}/>
 			<h1>Add Scheduled Event</h1>
-
-			<h2>add new:</h2>
 			<EditScheduledEventComponent
 				post={model.addScheduledEvent}
 				text="ADD"/>
-			<ChangeViewButton model={this.state.model} view={ViewType.MAIN} text="Back to main"/>
 
 		</div>);
 	}

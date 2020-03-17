@@ -1,5 +1,6 @@
 import * as React from "react";
 import DailyGoal from "../../goalData/DailyGoal";
+import {FiCheckCircle, FiCircle} from "react-icons/all";
 
 interface DailyGoalViewProps {
 	event: DailyGoal;
@@ -14,20 +15,11 @@ export default class DailyGoalView extends React.Component<DailyGoalViewProps, {
 	};
 
 	render() {
-		let info: JSX.Element[] = [];
 		let event = this.props.event;
 
-		if (!event.completed) {
-			info.push(<button onClick={this.completeGoal}>COMPLETE</button>);
-		}
-		else {
-			info.push(<span>is completed!</span>);
-			info.push(<button onClick={this.completeGoal}>UNCOMPLETE</button>);
-		}
-
-		return (<div>
-			{event.name}
-			{info}
+		return (<div className='scheduleItem'>
+			<div className={event.completed?"completed":""}>{event.name}</div>
+			<button key={1} onClick={this.completeGoal}>{event.completed? <FiCheckCircle/> : <FiCircle/>}</button>
 		</div>);
 	}
 }

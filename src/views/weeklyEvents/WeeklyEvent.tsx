@@ -3,6 +3,7 @@ import viewProps from "../data/viewProps";
 import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
 import FormatDate from "../../utility/datesAndTimes/FormatDate";
 import {FormatTimeFromString} from "../../utility/datesAndTimes/FormatTime";
+import {FiCheck, FiPlus} from "react-icons/all";
 
 interface WeeklyEventViewProps extends viewProps {
 	onSubmit ?: () => void;
@@ -101,28 +102,28 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 	};
 
 	render() {
-		let buttonText = "";
+		let buttonText :JSX.Element|null;
 
 		if (this.add) {
-			buttonText = "ADD";
+			buttonText = <FiPlus/>;
 		}
 		else {
-			buttonText = "SAVE";
+			buttonText = <FiCheck/>;
 		}
 
-		return (<div>
+		return (<div className='weeklyEvent'>
 			<h3>name</h3>
 			<input type="text" onChange={this.changeName} value={this.state.name}/>
 			<h3>days</h3>
 			<select onChange={this.changeDays} multiple={true} value={this.state.days}>
 				{WeeklyEventView.dayOptions.map(value => <option key={value}>{value}</option>)}
 			</select>
-			<h3>start</h3>
-			<input type="time" onChange={this.changeStart} value={this.state.start}/>
-			<h3>length</h3>
+			<h3>time</h3>
+			at <input type="time" onChange={this.changeStart} value={this.state.start}/>
+			for
 			<input type="number" onChange={this.changeLength} value={this.state.len}/>
+			minutes
 			<button onClick={this.post}>{buttonText}</button>
-
 		</div>);
 	}
 }

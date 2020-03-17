@@ -1,0 +1,12 @@
+.login {
+    margin: 0 auto;
+}
+
+.loginButtons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.loginButtons button {
+    margin: 5px;
+}

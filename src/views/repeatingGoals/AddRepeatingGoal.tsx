@@ -4,6 +4,7 @@ import {GoalFrequency} from "../../goalData/GoalFrequency";
 import EnumSelect from "../input/EnumSelect";
 import RepeatingGoal from "../../goalData/RepeatingGoal";
 import {GoalType} from "../../goalData/GoalType";
+import {FiPlus} from "react-icons/all";
 
 interface TextAndButtonProps {
 	submit: (goal: RepeatingGoal) => void;
@@ -45,13 +46,13 @@ export default class AddRepeatingGoal extends React.Component<TextAndButtonProps
 
 
 	render = () => {
-		return (<div>
+		return (<div className={'addGoal'}>
 			<input type="text"
 			       id={AddRepeatingGoal.inputID}
 			       onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({ name: e.target.value })}
 			       value={this.state.name}/>
 			<EnumSelect type={GoalFrequency} container={this}/>
-			<button onClick={this.submit}>ADD</button>
+			<button onClick={this.submit} className={'addButton'}><FiPlus/></button>
 		</div>);
 	}
 }

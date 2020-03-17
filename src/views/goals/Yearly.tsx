@@ -6,6 +6,7 @@ import {GoalType} from "../../goalData/GoalType";
 import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import DeepCopy from "../../utility/objects/DeepCopy";
+import {FiArrowRight, FiHome} from "react-icons/all";
 
 
 export default class YearlyView extends React.Component<viewProps, viewState> {
@@ -42,7 +43,10 @@ export default class YearlyView extends React.Component<viewProps, viewState> {
 				decompose={this.state.model.startDecomposeGoal}
 				type={GoalType.YEARLY}
 				optionalButton={() => null}/>
-			<button onClick={() => this.state.model.changeView(ViewType.MONTHLY)}>done</button>
+			<div style={{"display": "flex", "justifyContent": "space-between", "padding": "16px"}}>
+				<button onClick={() => this.state.model.changeView(ViewType.MAIN)}><FiHome/></button>
+				<button onClick={() => this.state.model.changeView(ViewType.MONTHLY)}><FiArrowRight/></button>
+			</div>
 		</div>);
 	}
 }

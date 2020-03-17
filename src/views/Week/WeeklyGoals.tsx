@@ -10,7 +10,7 @@ import WeeklyAssignedDays from "./WeeklyAssignedDays";
 import WeeklyReoccurringGoals from "./WeeklyReoccurringGoals";
 import RepeatingGoal from "../../goalData/RepeatingGoal";
 import {GoalFrequency} from "../../goalData/GoalFrequency";
-
+import './weekly.css'
 
 export default class WeeklyGoalsView extends React.Component<viewProps, viewState> {
 
@@ -26,8 +26,8 @@ export default class WeeklyGoalsView extends React.Component<viewProps, viewStat
 	listener: Listener;
 	render = () => {
 		let model = this.props.model;
-		return(<div>
-			<p>Weekly Plan</p>
+		return(<div className={'weeklyView'}>
+			<h1>Weekly Plan</h1>
 			<GoalList
 				goals={model.weeklyGoals}
 				type={GoalType.WEEKLY}
@@ -50,7 +50,9 @@ export default class WeeklyGoalsView extends React.Component<viewProps, viewStat
                  }}
 			 />
 			 <WeeklyAssignedDays model={this.state.model}/>
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>done</button>
+			 <div className={'doneArea'}>
+				<button onClick={() => this.state.model.changeView(ViewType.MAIN)} className={'doneButton'}>DONE</button>
+			 </div>
 		</div>);
 	}
 }

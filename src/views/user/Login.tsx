@@ -4,6 +4,7 @@ import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import {ViewType} from "../ViewTypes";
 
+import './login.css';
 
 export default class LoginView extends React.Component<viewProps, viewState> {
 
@@ -46,12 +47,14 @@ export default class LoginView extends React.Component<viewProps, viewState> {
 	};
 
 	render = () => {
-		return (<div>
-			<p>Username: </p> <input type="text" onChange={this.setUsername}/>
-			<p>Password: </p> <input type="password" onChange={this.setPassword}/>
+		return (<div className={"login"}>
+			<h2>Username: </h2> <input type="text" onChange={this.setUsername}/>
+			<h2>Password: </h2> <input type="password" onChange={this.setPassword}/>
 			<br/>
-			<button onClick={this.login}>Login</button>
-			<button onClick={()=>this.state.model.register(this.username, this.password)}>Register</button>
+			<div className={"loginButtons"}>
+				<button onClick={this.login}>Login</button>
+				<button onClick={()=>this.state.model.register(this.username, this.password)}>Register</button>
+			</div>
 		</div>);
 	}
 }

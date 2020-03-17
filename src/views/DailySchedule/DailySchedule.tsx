@@ -4,6 +4,15 @@ import {ViewType} from "../ViewTypes";
 import Listener from "../Listener";
 import {viewState} from "../data/viewState";
 import DailyScheduleBody from "./DailyScheduleBody";
+import ChangeDayButton from "./ChangeDayButton";
+import FormatDate from "../../utility/datesAndTimes/FormatDate";
+import '../dailyPlan/dailyPlan.css'
+import {
+	FiMinimize2
+} from "react-icons/all";
+import Model from "../../model/Model";
+import DailyButtons from "./DailyButtons";
+
 
 
 export default class DailyScheduleView extends React.Component<viewProps, viewState> {
@@ -21,21 +30,20 @@ export default class DailyScheduleView extends React.Component<viewProps, viewSt
 
 	render = () => {
 		let model = this.state.model;
-		return (<div>
-			<p>Daily Schedule</p>
-			<div>
-				<DailyScheduleBody
-					model={model}
-					detailed={true}
-				/>
+		return (<div className='planBox'>
+				<div className='calendarBox'>
+					<DailyButtons model={model} otherView={ViewType.DAILY_PLAN} otherViewIcon={<FiMinimize2/>}/>
+					<h1 className="date">{FormatDate(model.date)}</h1>
+					<div className="fullSchedule">
+						<DailyScheduleBody
+							model={model}
+							detailed={true}
+						/>
+					</div>
+					<h3 className="date">{FormatDate(model.date)}</h3>
+					<DailyButtons model={model} otherView={ViewType.DAILY_PLAN} otherViewIcon={<FiMinimize2/>}/>
+				</div>
 			</div>
-			<button onClick={() => {
-				this.state.model.resetDate();
-				this.state.model.changeView(ViewType.MAIN)
-			}}>Back to Main</button>
-			<button onClick={() => this.state.model.changeView(ViewType.DAILY_PLAN)}>Plan</button>
-			<button onClick={() => this.state.model.changeView(ViewType.CALENDAR)}>Calendar</button>
-		</div>
 		);
 	}
 }

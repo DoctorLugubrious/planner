@@ -6,6 +6,7 @@ import {viewState} from "../data/viewState";
 import GoalList from "../goals/GoalList";
 import {GoalType} from "../../goalData/GoalType";
 import DeepCopy from "../../utility/objects/DeepCopy";
+import {FiHome} from "react-icons/all";
 
 
 export default class LongTermGoalsView extends React.Component<viewProps, viewState> {
@@ -24,7 +25,6 @@ export default class LongTermGoalsView extends React.Component<viewProps, viewSt
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
 		let newGoals = DeepCopy(nextProps.model.longTermGoals);
 		if (newGoals === this.originalGoals) {
-			console.log("not rerendering", newGoals, this.originalGoals);
 			return false;
 		}
 
@@ -36,7 +36,8 @@ export default class LongTermGoalsView extends React.Component<viewProps, viewSt
 
 		let model = this.state.model;
 		return (<div>
-			<p>Goals</p>
+			<button onClick={() => this.state.model.changeView(ViewType.MAIN)} style={{'marginLeft': '16px'}}><FiHome/></button>
+			<h1>Long-term Goals</h1>
 			<GoalList
 				add={model.addLongTermGoal}
 				decompose={model.startDecomposeGoal}
@@ -45,8 +46,7 @@ export default class LongTermGoalsView extends React.Component<viewProps, viewSt
 				roles={model.roles}
 				type={GoalType.LONG_TERM}
 				optionalButton={() => null}/>
-			<button onClick={() => this.state.model.changeView(ViewType.ADD_GOAL)}>Add Goal</button>
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>done</button>
+
 		</div>);
 	}
 }

@@ -4,6 +4,8 @@ import {ViewType} from "../ViewTypes";
 import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import StringInput from "../input/StringInput";
+import {FiHome, FiPlus, FiTrash} from "react-icons/all";
+import './roles.css'
 
 
 export default class RolesView extends React.Component<viewProps, viewState> {
@@ -35,17 +37,19 @@ export default class RolesView extends React.Component<viewProps, viewState> {
 
 	render = () => {
 		return (<div>
-			<p>Roles</p>
-			<ol>
+
+			<button style={{'margin': '16px'}} onClick={() => this.state.model.changeView(ViewType.MAIN)}><FiHome/></button>
+			<h1>Roles</h1>
+
+			<ol className={'roles'}>
 			{this.props.model.roles.map((role: string, index: number) => (
-				<li key ={index}>
+				<li key={index} className={'role'}>
 					{role}
-					<button onClick={() => this.props.model.deleteRole(role)}>DELETE</button>
+					<button onClick={() => this.props.model.deleteRole(role)} className={'deleteButton'}><FiTrash/></button>
 				</li>
 			))}
 			</ol>
-			<StringInput onFinish={this.addRoles} buttonName="Add Role"/>
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>Back to Main</button>
+			<StringInput onFinish={this.addRoles} buttonName={<FiPlus/>}/>
 		</div>);
 	}
 }

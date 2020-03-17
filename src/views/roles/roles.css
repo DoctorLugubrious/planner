@@ -1,0 +1,15 @@
+
+.roles {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.role {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px;
+    padding: 5px;
+    box-shadow: 1px 1px 4px black;
+}

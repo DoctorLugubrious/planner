@@ -4,6 +4,7 @@ import DeepCopy from "../../utility/objects/DeepCopy";
 import {GoalWithType} from "../../goalData/GoalWithType";
 import {GoalType} from "../../goalData/GoalType";
 import EnumSelect from "../input/EnumSelect";
+import {FiPlus, FiCheck} from "react-icons/all";
 
 interface GoalListProps {
 	onFinish: (result: GoalWithType[], keep: boolean) => void;
@@ -61,25 +62,36 @@ export default class GoalDecomposeList extends React.Component<GoalListProps, Go
 	};
 
 	render() {
-		return (<div>
-			<ol>
+		return (<div className={'decomposeGoals'}>
+			<ol className={'toCreateGoals'}>
 				{this.state.items.map((goal: GoalWithType, index: number) =>
-					<li key={index}>{goal.name}: {GoalType[goal.type]}</li>
+                      <li key={index}>
+	                      <div className={'toCreateName'}>{goal.name}</div>
+	                      <div className={'goalType'}>({GoalType[goal.type]})</div>
+                      </li>
 				)}
 			</ol>
-			<input type="text" onChange={this.changeNewName} id="newInput"/>
-			<EnumSelect type={GoalType} container={this}/>
-			<button onClick={this.addItem}>
-				+
-			</button>
-			<label>Keep original goal? <input type="checkbox" checked={this.state.keep} onChange={(e) => {
-				this.setState({
-					keep: e.target.checked,
-				})
-			}}/></label>
-			<button onClick={this.onFinish}>
-				DECOMPOSE
-			</button>
+			<div className={'addDecompose'}>
+				<input type="text" onChange={this.changeNewName} id="newInput"/>
+				<EnumSelect type={GoalType} container={this}/>
+				<button onClick={this.addItem}>
+					<FiPlus/>
+				</button>
+			</div>
+
+			<div className={'finish'}>
+				Keep original goal?
+				<input type="checkbox" checked={this.state.keep} onChange={(e) => {
+					this.setState({
+						keep: e.target.checked
+					});
+				}}/>
+
+				<button onClick={this.onFinish}>
+					DONE
+				</button>
+			</div>
+
 		</div>)
 	}
 }

@@ -1,6 +1,7 @@
 import React, {ChangeEvent} from 'react'
 import {FormatTime, Time12to24} from "../../utility/datesAndTimes/FormatTime";
 import DailyGoal from "../../goalData/DailyGoal";
+import {FiTrash} from "react-icons/all";
 
 interface GoalProps {
 	assignGoal:(name:string, time1:string, len: number, day: Date) => void;
@@ -54,24 +55,28 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 		const assignName = this.props.goal.start === "" ? "assign" : "reassign";
 
 		return (
-			<li>
-				{props.goal.name}
-				<input type="time"
-				       value={this.state.time}
-				       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({time: e.target.value})}
-				/>
-				<input type="number"
-				       value={this.state.len}
-				       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({len: parseInt(e.target.value)})}
-				/>
-				<button
-					onClick={() => props.assignGoal(props.goal.name, FormatTime(this.date, true), this.state.len, new Date())}>
-					{assignName}
-				</button>
-				<button onClick={props.deleteGoal}>
-						delete
+			<div className="dailyGoal">
+				<div className="dailyGoalName">{props.goal.name}</div>
+				<div className={'dailyButtons'}>
+					<div className={'reassign'}>
+						<input type="time"
+						       value={this.state.time}
+						       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({time: e.target.value})}
+						/>
+						<input type="number"
+						       value={this.state.len}
+						       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({len: parseInt(e.target.value)})}
+						/>
+						<button
+							onClick={() => props.assignGoal(props.goal.name, FormatTime(this.date, true), this.state.len, new Date())}>
+							{assignName}
+						</button>
+					</div>
+					<button className="deleteButton" onClick={props.deleteGoal}>
+						<FiTrash/>
 					</button>
-			</li>
+				</div>
+			</div>
 		);
 	}
 }

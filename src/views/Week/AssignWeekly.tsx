@@ -41,7 +41,7 @@ export default class AssignWeekly extends React.Component<AssignWeeklyProps, Ass
 	};
 
 	render = () => {
-		return (<div>
+		return (<div className='assignWeekly'>
 			<select onChange={this.changeDays} value={this.state.day}>
 				{WeeklyEventView.dayOptions.map(value => <option key={value}>{value}</option>)}
 			</select>
@@ -50,7 +50,7 @@ export default class AssignWeekly extends React.Component<AssignWeeklyProps, Ass
 				completed: false,
 				start: "",
 			}, this.getDate())}>
-				ASSIGN TO DAY
+				ASSIGN
 			</button>
 		</div>)
 	}

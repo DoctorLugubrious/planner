@@ -1,0 +1,63 @@
+
+
+.weeklyView .goal {
+    display: grid;
+    grid-template-areas:
+            "name decompose"
+            "name delete"
+            "name assign";
+    grid-template-columns: 1fr 100px;
+    grid-template-rows: 40px 40px 40px;
+    grid-row-gap: 10px;
+}
+
+.goalName {
+    grid-area: name;
+}
+
+.weeklyView .goal button {
+    grid-area: decompose;
+    max-height: 100%;
+    min-height: 100%;
+}
+
+
+.weeklyView .goal .deleteButton {
+    grid-area: delete;
+}
+
+.assignWeekly {
+    grid-area: assign;
+    display: flex;
+}
+
+.weeklyView .repeatingGoal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.weeklyDay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day {
+    width: 40px;
+    text-align: end;
+}
+
+.dayCount {
+    min-width: 40px;
+    text-align: end;
+}
+
+.doneArea {
+    padding: 16px;
+}
+
+button.doneButton {
+    width: 100%;
+}

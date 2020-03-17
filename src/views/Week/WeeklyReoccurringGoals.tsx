@@ -16,14 +16,14 @@ export default class WeeklyReoccurringGoals extends React.Component<WeeklyReoccu
 	render() {
 		let result: JSX.Element[] = [];
 		this.props.goals.forEach((value: RepeatingGoal, index: number) => {
-			result.push((<li key={index}>
+			result.push((<li key={index} className={'repeatingGoal goal'}>
 				{value.name}
 				<AssignWeekly goal={value} post={this.props.post}/>
 			</li>));
 		});
 		return (<div>
 			<h2>Reoccurring</h2>
-			<ul>
+			<ul className={'goalList'}>
 				{result}
 			</ul>
 		</div>);

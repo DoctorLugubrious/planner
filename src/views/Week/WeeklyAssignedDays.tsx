@@ -52,7 +52,7 @@ export default class WeeklyAssignedDays extends React.Component<WeeklyAssignedDa
 
 		this.weeklyGoalNumbers.forEach((value, key) => {
 			result.push(<div key={key} className="weeklyDay">
-				{key} : {value}
+		            <div className={"day"}>{key}:</div><div className={"dayCount"}>{value}</div>
 			</div>);
 		});
 

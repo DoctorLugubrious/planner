@@ -5,7 +5,7 @@ import Listener from "../Listener";
 import {viewState} from "../data/viewState";
 import AddRepeatingGoal from "./AddRepeatingGoal";
 import RepeatingGoal from "../../goalData/RepeatingGoal";
-
+import {FiArrowLeft, FiArrowRight, FiTrash} from "react-icons/all";
 
 export default class RepeatingGoalView extends React.Component<viewProps, viewState> {
 	private originalSize: number;
@@ -36,14 +36,23 @@ export default class RepeatingGoalView extends React.Component<viewProps, viewSt
 
 	render = () => {
 		return (<div>
-			<p>Edit Continuous Goals</p>
-			<ul>
-			{this.state.model.repeatingGoals.map((value, index) => (
-				<li key={index + value.name}>{value.name}<button onClick={() => this.deleteGoal(value)}>DELETE</button> </li>
-			))}
-			</ul>
-			<AddRepeatingGoal submit={this.props.model.addRepeatingGoal} roles={this.props.model.roles}/>
-			<button onClick={() => this.state.model.changeView(ViewType.WEEKLY_GOALS)}>done</button>
+			<h1>Edit Repeating Goals</h1>
+			<div>
+				<ul className='goalList'>
+				{this.state.model.repeatingGoals.map((value, index) => (
+					<li key={index + value.name} className={'goal'}>
+						<div className='goalName'>{value.name}</div>
+						<button onClick={() => this.deleteGoal(value)} className='deleteButton'><FiTrash/></button>
+					</li>
+				))}
+				</ul>
+				<AddRepeatingGoal submit={this.props.model.addRepeatingGoal} roles={this.props.model.roles}/>
+			</div>
+
+			<div style={{"display": "flex", "justifyContent": "space-between", "padding": "16px"}}>
+				<button onClick={() => this.state.model.changeView(ViewType.MONTHLY)}><FiArrowLeft/></button>
+				<button onClick={() => this.state.model.changeView(ViewType.WEEKLY_GOALS)}><FiArrowRight/></button>
+			</div>
 		</div>);
 	};
 }

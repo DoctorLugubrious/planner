@@ -21,6 +21,7 @@ export default class Footer extends React.Component<footerProps, footerState> {
 	}
 
 	render() {
+		/*
 		let ruby: JSX.Element | null = null;
 		if (this.props.view === ViewType.LOGIN) {
 			ruby = null;
@@ -39,10 +40,10 @@ export default class Footer extends React.Component<footerProps, footerState> {
 				Help button for {ViewType[this.props.view]}
 			</button>);
 		}
+		*/
 
-		return (<div>
+		return (<div className="footer">
 			Copyright Avery Green 2019
-			{ruby}
 		</div>);
 	}
 };

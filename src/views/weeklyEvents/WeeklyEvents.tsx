@@ -5,6 +5,8 @@ import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import ReoccurringEvent from "./ReoccurringEvent";
 import WeeklyEventView from "./WeeklyEvent";
+import './weeklyEvents.css'
+import {FiHome, FiEdit} from "react-icons/all";
 
 interface WeeklyEventsViewState extends viewState {
 	editingName: string;
@@ -26,7 +28,8 @@ export default class WeeklyEventsView extends React.Component<viewProps, WeeklyE
 
 	render = () => {
 		return (<div>
-			<p>Weekly Events</p>
+			<button style={{'margin': '16px'}} onClick={() => this.state.model.changeView(ViewType.MAIN)}><FiHome/></button>
+			<h1>Weekly Events</h1>
 			<ul>
 				{this.state.model.weeklyEvents.map((event, index) => {
 					let result: JSX.Element[] = [];
@@ -45,18 +48,19 @@ export default class WeeklyEventsView extends React.Component<viewProps, WeeklyE
 					else {
 						result.push(<div>
 							<button key={"button" + index}
-												 onClick={() => this.setState({editingName: event.name})}>EDIT</button>
+							        onClick={() => this.setState({editingName: event.name})}><FiEdit/></button>
 
 						</div>);
 					}
 
-					return <li key={"item" + index}>
+					return <li key={"item" + index} className={'eventItem'}>
 						{result}
 					</li>
 				})}
 			</ul>
+
+			<h2>Add</h2>
 			<WeeklyEventView model={this.state.model}/>
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)}>Back</button>
 		</div>);
 	}
 }

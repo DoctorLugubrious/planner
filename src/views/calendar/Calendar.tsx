@@ -5,6 +5,8 @@ import Listener from "../Listener";
 import {viewState} from "../data/viewState";
 import {ViewType} from "../ViewTypes";
 
+import './calendar.css';
+
 
 export default class CalendarView extends React.Component<viewProps, viewState> {
 	constructor(props: viewProps) {

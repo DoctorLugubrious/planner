@@ -5,6 +5,10 @@ import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import DailyScheduleBody from "../DailySchedule/DailyScheduleBody";
 import EditDailyGoals from "./EditDailyGoals";
+import FormatDate from "../../utility/datesAndTimes/FormatDate";
+import './dailyPlan.css';
+import {FiMaximize2} from "react-icons/all";
+import DailyButtons from "../DailySchedule/DailyButtons";
 
 
 export default class DailyPlanView extends React.Component<viewProps, viewState> {
@@ -54,38 +58,46 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 
 
 	render = () => {
-		return (<div>
-			<p>Daily Events</p>
-				<h2>Unassigned Goals</h2>
-				<EditDailyGoals
-					events={this.getUnassignedEvents()}
-					date={this.state.model.date}
-					deleteGoal={this.state.model.deleteDailyGoal}
-					onItemClick={this.onItemClick}/>
+		let model = this.state.model;
+		return (<div className="view">
 
-				<input type="text" onChange={this.textChange}/>
-				<button onClick={() => {
-					this.state.model.addDailyGoal({name: this.newGoalName, completed: false, start: ""});
-				}}>+
-				</button>
+			<div className="planBox">
+				<div className="planSection">
+					<DailyButtons model={this.props.model} otherView={ViewType.DAILY_SCHEDULE} otherViewIcon={<FiMaximize2/>}/>
+					<h1 className="date">{FormatDate(model.date)}</h1>
+					<h2>Unassigned Goals</h2>
+					<EditDailyGoals
+						events={this.getUnassignedEvents()}
+						date={this.state.model.date}
+						deleteGoal={this.state.model.deleteDailyGoal}
+						onItemClick={this.onItemClick}/>
+					<div className="addDailyGoal">
+						<h2>Add New Daily Goal</h2>
+						<div className={"hbox"}>
+							<input type="text" onChange={this.textChange}/>
+							<button className="add" onClick={() => {
+								this.state.model.addDailyGoal({name: this.newGoalName, completed: false, start: ""});
+							}}>+
+							</button>
+						</div>
+					</div>
 
-				<h2>Assigned Daily Goals</h2>
-				<EditDailyGoals
-					events={this.getAssignedEvents()}
-					date={this.state.model.date}
-					deleteGoal={this.state.model.deleteDailyGoal}
-					onItemClick={this.onItemClick}/>
-				<DailyScheduleBody
-					detailed={false}
-					model={this.props.model}/>
+					<h2>Assigned Daily Goals</h2>
+					<EditDailyGoals
+						events={this.getAssignedEvents()}
+						date={this.state.model.date}
+						deleteGoal={this.state.model.deleteDailyGoal}
+						onItemClick={this.onItemClick}/>
+					<DailyScheduleBody
+						detailed={false}
+						model={this.props.model}/>
+					<h3 className="date">{FormatDate(model.date)}</h3>
+					<DailyButtons model={this.props.model} otherView={ViewType.DAILY_SCHEDULE} otherViewIcon={<FiMaximize2/>}/>
+				</div>
 
-			<button onClick={() => {
-				this.state.model.resetDate();
-				this.state.model.changeView(ViewType.MAIN)
-			}}>Back to Main</button>
-			<button onClick={() => this.state.model.changeView(ViewType.DAILY_SCHEDULE)}>Schedule</button>
-			<button onClick={() => this.state.model.changeView(ViewType.CALENDAR)}>Calendar</button>
+
 			</div>
+		</div>
 		);
 	}
 }

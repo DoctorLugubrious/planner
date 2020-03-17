@@ -25,6 +25,8 @@ import Footer from "./views/page/footer/footer";
 import ErrorView from "./views/error/ErrorView";
 import TutorialView from "./views/TutorialView";
 
+import './views/page/all.css';
+
 class App extends React.Component<{}, { view: ViewType }> {
 	state: { view: ViewType };
 	private readonly model: Model;
@@ -85,8 +87,8 @@ class App extends React.Component<{}, { view: ViewType }> {
 	}
 
 	render() {
-		return <div>
-			<Header username={this.model.username}/>
+		return <div className="mainBox">
+			<Header username={this.model.username} mainPage={() => this.setView(ViewType.MAIN)}/>
 			<ErrorView model={this.model}/>
 			{this.getView()}
 			<Footer view={this.state.view}/>

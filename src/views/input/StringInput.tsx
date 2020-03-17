@@ -1,9 +1,10 @@
 import * as React from "react";
 import {ChangeEvent} from "react";
+import './stringInput.css'
 
 interface InputListProps {
 	onFinish: (result: string) => void;
-	buttonName: string;
+	buttonName: string|JSX.Element;
 }
 
 interface InputListState {
@@ -29,7 +30,7 @@ export default class StringInput extends React.Component<InputListProps, InputLi
 	};
 
 	render() {
-		return (<div>
+		return (<div className={'stringInput'}>
 			<input type="text" onChange={this.changeNew} value={this.state.current} id="newInput"/>
 			<button onClick={this.onFinish}>
 				{this.props.buttonName}

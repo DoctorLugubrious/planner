@@ -1,0 +1,9 @@
+.scheduledEventEdit {
+    display: flex;
+    flex-direction: column;
+    margin: 16px;
+}
+
+.addScheduledEvent button {
+    margin: 16px;
+}

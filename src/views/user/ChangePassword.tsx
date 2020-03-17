@@ -5,6 +5,7 @@ import {ChangeEvent} from "react";
 import Listener from "../Listener";
 import {ViewType} from "../ViewTypes";
 import ChangeViewButton from "../buttons/ChangeViewButton";
+import {FiHome} from "react-icons/all";
 
 export default class ChangePasswordView extends React.Component<viewProps, viewState> {
 	constructor(props: viewProps) {
@@ -26,11 +27,10 @@ export default class ChangePasswordView extends React.Component<viewProps, viewS
 	private password: string = "";
 
 	render() {
-		return (<div>
+		return (<div style={{'display': 'flex', 'flexDirection': 'column'}}>
+			<ChangeViewButton model={this.state.model} view={ViewType.MAIN} text={<FiHome/>}/>
 			<p>New Password: </p> <input type="password" onChange={this.setNewPassword}/>
-			<br/>
 			<button onClick={this.submit}>Change Password</button>
-			<ChangeViewButton model={this.state.model} view={ViewType.MAIN} text="BACK"/>
 		</div>);
 	}
 }

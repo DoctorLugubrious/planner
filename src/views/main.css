@@ -1,0 +1,19 @@
+.mainList {
+    max-width: 600px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+    margin: 0 auto;
+}
+
+.mainList li {
+    flex: 1;
+    padding: 5px;
+}
+
+.mainList button {
+    height: 100%;
+    width: 100%;
+}

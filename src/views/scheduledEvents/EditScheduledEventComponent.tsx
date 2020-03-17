@@ -4,6 +4,8 @@ import {ScheduledEvent} from "../../goalData/ScheduledEvent";
 import FormatDate from "../../utility/datesAndTimes/FormatDate";
 import {FormatTime} from "../../utility/datesAndTimes/FormatTime";
 
+import './scheduledEventEdit.css'
+
 interface ScheduledEventProps {
 	post: (event: ScheduledEvent, oldName: string) => void;
 	text: string;
@@ -86,15 +88,18 @@ export default class EditScheduledEventComponent extends React.Component<Schedul
 	};
 
 	render() {
-		return (<div>
+		return (<div className={'scheduledEventEdit'}>
 			<h3>name</h3>
 			<input type="text" onChange={this.changeName} value={this.state.name}/>
 			<h3>date</h3>
 			<input type="date" onChange={this.changeDate} value={this.state.date}/>
 			<h3>time</h3>
-			<input type="time" onChange={this.changeTime} value={this.state.time}/>
-			<h3>length</h3>
-			<input type="number" onChange={this.changeLength} value={this.state.len}/>
+			<div className={'timeInput'}>
+				At <input type="time" onChange={this.changeTime} value={this.state.time}/>
+				for
+				<input type="number" onChange={this.changeLength} value={this.state.len}/>
+				minutes
+			</div>
 			<button onClick={this.post}>{this.props.text}</button>
 
 
