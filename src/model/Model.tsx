@@ -1,4 +1,4 @@
-import ServerProxy from '../server/ServerProxy';
+git import ServerProxy from '../server/ServerProxy';
 import DailyGoal from "../goalData/DailyGoal";
 import ReoccurringWeeklyEvent from "../goalData/ReoccurringWeeklyEvent";
 import Goal from "../goalData/Goal";
