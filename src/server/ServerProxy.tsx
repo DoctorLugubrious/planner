@@ -17,7 +17,7 @@ export default class ServerProxy {
 	async sendRequest(path: string, info: any) {
 		return request({
 			        "method":"POST",
-			        "uri": "http://averys.green:3001/" + path,
+			        "uri": "https://plan.averys.green:3001/" + path,
 			        "json": true,
 			        "body": info
 		        })
