@@ -8,22 +8,29 @@ interface AddGoalProps {
 }
 
 interface AddGoalState {
+	name: string;
 }
 
 export default class AddGoal extends React.Component<AddGoalProps, AddGoalState> {
 
-	current: string = "";
+	constructor(props: AddGoalProps) {
+		super(props);
+		this.state = {
+			name: "",
+		}
+	}
 
 	changeNew = (e: ChangeEvent<HTMLInputElement>) => {
-		this.current = e.target.value;
+		this.setState({name: e.target.value});
 	};
 
 	render() {
 		return (<div>
 			<div className='addGoal'>
-				<input type="text" onChange={this.changeNew} id="newInput"/>
+				<input type="text" onChange={this.changeNew} value={this.state.name}/>
 				<button onClick={() => {
-					this.props.add({name: this.current}, this.props.role);
+					this.props.add({name: this.state.name}, this.props.role);
+					this.setState({name: ""});
 				}}><FiPlus/></button>
 			</div>
 		</div>);

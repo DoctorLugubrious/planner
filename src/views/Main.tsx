@@ -30,10 +30,8 @@ export default class MainView extends React.Component<viewProps, viewState> {
 	}
 
 	render = () => {
-		const lastLogin = this.state.model.lastLogin;
-
 		const today = new Date();
-		const weeklyPlan : ViewType = lastLogin.getMonth() !== today.getMonth() ? ViewType.YEARLY : ViewType.MONTHLY;
+		const weeklyPlan : ViewType = today.getDate() <= 7 ? ViewType.YEARLY : ViewType.MONTHLY;
 		return (<div className="view">
 			<ul className="mainList">
 				<li><button onClick={() => this.state.model.changeView(ViewType.DAILY_PLAN)}>Daily Plan</button></li>

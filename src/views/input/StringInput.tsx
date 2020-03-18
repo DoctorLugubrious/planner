@@ -31,7 +31,7 @@ export default class StringInput extends React.Component<InputListProps, InputLi
 
 	render() {
 		return (<div className={'stringInput'}>
-			<input type="text" onChange={this.changeNew} value={this.state.current} id="newInput"/>
+			<input type="text" onChange={this.changeNew} value={this.state.current}/>
 			<button onClick={this.onFinish}>
 				{this.props.buttonName}
 			</button>

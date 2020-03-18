@@ -46,10 +46,9 @@ export default class WeeklyEventsView extends React.Component<viewProps, WeeklyE
 							event={event}/>);
 					}
 					else {
-						result.push(<div>
-							<button key={"button" + index}
+						result.push(<div key={"button" + index}>
+							<button
 							        onClick={() => this.setState({editingName: event.name})}><FiEdit/></button>
-
 						</div>);
 					}
 

@@ -13,4 +13,6 @@ let GetDay = (date:Date) => {
 	return weekday[day];
 };
 
+
+
 export default GetDay;

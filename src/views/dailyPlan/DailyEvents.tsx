@@ -9,6 +9,7 @@ import FormatDate from "../../utility/datesAndTimes/FormatDate";
 import './dailyPlan.css';
 import {FiMaximize2} from "react-icons/all";
 import DailyButtons from "../DailySchedule/DailyButtons";
+import FormatDateHuman from "../../utility/datesAndTimes/FormatDateHuman";
 
 
 export default class DailyPlanView extends React.Component<viewProps, viewState> {
@@ -17,6 +18,7 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 
 	listener: Listener;
 	private originalAssigned: number;
+	private originalDate: Date;
 
 	constructor(props: viewProps) {
 		super(props);
@@ -24,6 +26,7 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 
 		this.originalUnassigned = this.getUnassignedEvents().length;
 		this.originalAssigned = this.getAssignedEvents().length;
+		this.originalDate = new Date(this.state.model.date);
 	}
 
 	getUnassignedEvents() {
@@ -41,12 +44,14 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
 		let newAssigned = this.getAssignedEvents().length;
 		let newUnassigned = this.getUnassignedEvents().length;
-		if (newAssigned === this.originalAssigned && newUnassigned === this.originalUnassigned) {
+		let newDate = this.state.model.date;
+		if (newDate === this.originalDate && newAssigned === this.originalAssigned && newUnassigned === this.originalUnassigned) {
 			return false;
 		}
 
 		this.originalUnassigned = newUnassigned;
 		this.originalAssigned = newAssigned;
+		this.originalDate = new Date(newDate);
 		return true;
 	}
 
@@ -64,7 +69,7 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 			<div className="planBox">
 				<div className="planSection">
 					<DailyButtons model={this.props.model} otherView={ViewType.DAILY_SCHEDULE} otherViewIcon={<FiMaximize2/>}/>
-					<h1 className="date">{FormatDate(model.date)}</h1>
+					<h1 className="date">{FormatDateHuman(model.date)}</h1>
 					<h2>Unassigned Goals</h2>
 					<EditDailyGoals
 						events={this.getUnassignedEvents()}
@@ -91,7 +96,7 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 					<DailyScheduleBody
 						detailed={false}
 						model={this.props.model}/>
-					<h3 className="date">{FormatDate(model.date)}</h3>
+					<h3 className="date">{FormatDateHuman(model.date)}</h3>
 					<DailyButtons model={this.props.model} otherView={ViewType.DAILY_SCHEDULE} otherViewIcon={<FiMaximize2/>}/>
 				</div>
 

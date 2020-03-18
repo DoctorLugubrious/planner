@@ -47,9 +47,6 @@ export default class GoalDecomposeList extends React.Component<GoalListProps, Go
 		items.push(this.state.current);
 		let current = {name:"", type: this.state.current.type};
 
-		let input :HTMLElement | null = document.getElementById('newInput');
-		if (input != null && input instanceof HTMLInputElement) input.value = "";
-
 		this.setState({
 			items,
 			current
@@ -72,7 +69,7 @@ export default class GoalDecomposeList extends React.Component<GoalListProps, Go
 				)}
 			</ol>
 			<div className={'addDecompose'}>
-				<input type="text" onChange={this.changeNewName} id="newInput"/>
+				<input type="text" onChange={this.changeNewName} value={this.state.current.name}/>
 				<EnumSelect type={GoalType} container={this}/>
 				<button onClick={this.addItem}>
 					<FiPlus/>

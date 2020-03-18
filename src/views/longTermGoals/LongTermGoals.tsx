@@ -36,7 +36,7 @@ export default class LongTermGoalsView extends React.Component<viewProps, viewSt
 
 		let model = this.state.model;
 		return (<div>
-			<button onClick={() => this.state.model.changeView(ViewType.MAIN)} style={{'marginLeft': '16px'}}><FiHome/></button>
+			<button onClick={() => this.state.model.changeView(ViewType.MAIN)} style={{'marginLeft': '16px', 'marginTop': '16px'}}><FiHome/></button>
 			<h1>Long-term Goals</h1>
 			<GoalList
 				add={model.addLongTermGoal}

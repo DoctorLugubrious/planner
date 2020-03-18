@@ -12,6 +12,7 @@ import {
 } from "react-icons/all";
 import Model from "../../model/Model";
 import DailyButtons from "./DailyButtons";
+import FormatDateHuman from "../../utility/datesAndTimes/FormatDateHuman";
 
 
 
@@ -33,14 +34,14 @@ export default class DailyScheduleView extends React.Component<viewProps, viewSt
 		return (<div className='planBox'>
 				<div className='calendarBox'>
 					<DailyButtons model={model} otherView={ViewType.DAILY_PLAN} otherViewIcon={<FiMinimize2/>}/>
-					<h1 className="date">{FormatDate(model.date)}</h1>
+					<h1 className="date">{FormatDateHuman(model.date)}</h1>
 					<div className="fullSchedule">
 						<DailyScheduleBody
 							model={model}
 							detailed={true}
 						/>
 					</div>
-					<h3 className="date">{FormatDate(model.date)}</h3>
+					<h3 className="date">{FormatDateHuman(model.date)}</h3>
 					<DailyButtons model={model} otherView={ViewType.DAILY_PLAN} otherViewIcon={<FiMinimize2/>}/>
 				</div>
 			</div>
