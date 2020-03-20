@@ -4,7 +4,7 @@ import DailyGoal from "../../goalData/DailyGoal";
 import {FiTrash} from "react-icons/all";
 
 interface GoalProps {
-	assignGoal:(name:string, time1:string, len: number, day: Date) => void;
+	assignGoal:(name:string, time1:string, len: number) => void;
 	deleteGoal:() => void;
 	date: Date;
 	goal: DailyGoal;
@@ -19,17 +19,21 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 	constructor(props: GoalProps) {
 		super(props);
 
-		let time = Time12to24(props.goal.start);
+		this.state = this.initState();
+	}
 
+	private initState(): GoalState {
+		let props = this.props;
+		let time:string = Time12to24(props.goal.start);
 
 		if (props.goal.len !== undefined) {
-			this.state = {
+			return {
 				time: time,
 				len: props.goal.len,
 			};
 		}
 		else {
-			this.state = {
+			return {
 				time: time,
 				len: 0,
 			};
@@ -43,13 +47,16 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 		let times: string[] = this.state.time.split(":");
 		newDate.setHours(parseInt(times[0]));
 		newDate.setMinutes(parseInt(times[1]));
-		console.log(newDate);
 
 		return newDate;
 	};
 
-	render = () => {
+	private assignGoal = () => {
+		this.props.assignGoal(this.props.goal.name, FormatTime(this.date, true), this.state.len);
+		this.setState(this.initState());
+	};
 
+	render = () => {
 		const props = this.props;
 
 		const assignName = this.props.goal.start === "" ? "assign" : "reassign";
@@ -68,7 +75,7 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 						       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({len: parseInt(e.target.value)})}
 						/>
 						<button
-							onClick={() => props.assignGoal(props.goal.name, FormatTime(this.date, true), this.state.len, new Date())}>
+							onClick={() => this.assignGoal()}>
 							{assignName}
 						</button>
 					</div>

@@ -33,9 +33,7 @@ export default class AssignWeekly extends React.Component<AssignWeeklyProps, Ass
 		let todayIndex = WeeklyEventView.dayOptions.findIndex((value => value == today));
 		let nextDayIndex = WeeklyEventView.dayOptions.findIndex((value => value == this.state.day));
 		//CALCULATES THE NUMBER OF DAYS BETWEEN THE CURRENT DATE AND THE NEXT SELECTED
-		console.log('assigning goal with today as', todayIndex, 'and day as', nextDayIndex);
 		let dayOffset = ((nextDayIndex - todayIndex) + 6) % 7 + 1;
-		console.log('result', dayOffset);
 
 		result.setDate(result.getDate() + dayOffset);
 

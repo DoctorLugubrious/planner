@@ -112,7 +112,6 @@ export default class User {
 		let result = this.deleteFromMap(this.dailyGoals, dateFormat, (item: DailyGoal) => {
 			return item.name === name;
 		});
-		result = this.deleteContinuous({name, frequency: GoalFrequency.DAILY}) || result;
 		return result;
 	};
 
@@ -141,7 +140,7 @@ export default class User {
 		let result = User.deleteFromArray(this.continuousGoals, item => item.name == goal.name);
 		if (result) {
 			this.dailyGoals.forEach((goals: DailyGoal[]) => {
-				User.deleteFromArray(goals, item => item.name == goal.name);
+				User.deleteFromArray(goals, (item:DailyGoal) => item.name == goal.name && item.start == "");
 			});
 		}
 		return result;

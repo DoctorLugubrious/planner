@@ -1,16 +1,15 @@
-import React, {ChangeEvent} from 'react'
+import React from 'react'
 import viewProps from "../data/viewProps";
 import {ViewType} from "../ViewTypes";
 import {viewState} from "../data/viewState";
 import Listener from "../Listener";
 import DailyScheduleBody from "../DailySchedule/DailyScheduleBody";
 import EditDailyGoals from "./EditDailyGoals";
-import FormatDate from "../../utility/datesAndTimes/FormatDate";
 import './dailyPlan.css';
 import {FiMaximize2} from "react-icons/all";
 import DailyButtons from "../DailySchedule/DailyButtons";
 import FormatDateHuman from "../../utility/datesAndTimes/FormatDateHuman";
-
+import AddDailyGoal from "./AddDailyGoal";
 
 export default class DailyPlanView extends React.Component<viewProps, viewState> {
 	private originalUnassigned: number;
@@ -55,12 +54,6 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 		return true;
 	}
 
-	textChange = (e: ChangeEvent<HTMLInputElement>) => {
-		this.newGoalName = e.target.value;
-	};
-
-	newGoalName: string = "";
-
 
 	render = () => {
 		let model = this.state.model;
@@ -76,16 +69,8 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 						date={this.state.model.date}
 						deleteGoal={this.state.model.deleteDailyGoal}
 						onItemClick={this.onItemClick}/>
-					<div className="addDailyGoal">
-						<h2>Add New Daily Goal</h2>
-						<div className={"hbox"}>
-							<input type="text" onChange={this.textChange}/>
-							<button className="add" onClick={() => {
-								this.state.model.addDailyGoal({name: this.newGoalName, completed: false, start: ""});
-							}}>+
-							</button>
-						</div>
-					</div>
+
+					<AddDailyGoal onSubmit={model.addDailyGoal}/>
 
 					<h2>Assigned Daily Goals</h2>
 					<EditDailyGoals

@@ -1,7 +1,6 @@
 import React, {ChangeEvent} from 'react'
 import viewProps from "../data/viewProps";
 import ReoccurringWeeklyEvent from "../../goalData/ReoccurringWeeklyEvent";
-import FormatDate from "../../utility/datesAndTimes/FormatDate";
 import {FormatTimeFromString} from "../../utility/datesAndTimes/FormatTime";
 import {FiCheck, FiPlus} from "react-icons/all";
 
@@ -57,8 +56,6 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 	};
 
 	changeStart = (e: ChangeEvent<HTMLInputElement>) => {
-
-		console.log(e.target.value);
 		this.setState({start: e.target.value});
 	};
 
