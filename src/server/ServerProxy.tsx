@@ -10,6 +10,7 @@ import Goal from "../goalData/Goal";
 import {GoalWithType} from "../goalData/GoalWithType";
 import ReoccurringWeeklyEvent from "../goalData/ReoccurringWeeklyEvent";
 import DateData from "./responseData/DateData";
+
 let request = require('request-promise');
 
 export default class ServerProxy {
@@ -17,7 +18,7 @@ export default class ServerProxy {
 	async sendRequest(path: string, info: any) {
 		return request({
 			        "method":"POST",
-			        "uri": "https://plan.averys.green:3001/" + path, //"http://localhost:3001/" + path,
+			        "uri": /*"https://plan.averys.green:3001/" + path, //*/"http://localhost:3001/" + path,
 			        "json": true,
 			        "body": info
 		        })

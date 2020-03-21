@@ -12,20 +12,11 @@ import FormatDateHuman from "../../utility/datesAndTimes/FormatDateHuman";
 import AddDailyGoal from "./AddDailyGoal";
 
 export default class DailyPlanView extends React.Component<viewProps, viewState> {
-	private originalUnassigned: number;
-
-
 	listener: Listener;
-	private originalAssigned: number;
-	private originalDate: Date;
 
 	constructor(props: viewProps) {
 		super(props);
 		this.listener = new Listener(this);
-
-		this.originalUnassigned = this.getUnassignedEvents().length;
-		this.originalAssigned = this.getAssignedEvents().length;
-		this.originalDate = new Date(this.state.model.date);
 	}
 
 	getUnassignedEvents() {
@@ -40,19 +31,6 @@ export default class DailyPlanView extends React.Component<viewProps, viewState>
 		this.state.model.updateDailyGoal({name: name, start: start, len: len, completed: false}, name);
 	};
 
-	shouldComponentUpdate(nextProps: Readonly<viewProps>, nextState: Readonly<viewState>, nextContext: any): boolean {
-		let newAssigned = this.getAssignedEvents().length;
-		let newUnassigned = this.getUnassignedEvents().length;
-		let newDate = this.state.model.date;
-		if (newDate === this.originalDate && newAssigned === this.originalAssigned && newUnassigned === this.originalUnassigned) {
-			return false;
-		}
-
-		this.originalUnassigned = newUnassigned;
-		this.originalAssigned = newAssigned;
-		this.originalDate = new Date(newDate);
-		return true;
-	}
 
 
 	render = () => {

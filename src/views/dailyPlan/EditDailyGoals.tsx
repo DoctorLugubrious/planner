@@ -20,7 +20,7 @@ export default class EditDailyGoals extends React.Component<EditDailyGoalProps, 
 
 		return (<ul>
 			{this.props.events.map((event: DailyGoal, index: number) => (
-				<li key={index}>
+				<li key={event.name}>
 					<DailyGoalDisplay
 						goal={event}
 						assignGoal={this.props.onItemClick}

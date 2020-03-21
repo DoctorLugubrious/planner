@@ -12,7 +12,7 @@ interface GoalProps {
 
 interface GoalState {
 	time: string;
-	len: number;
+	len: number|string;
 }
 
 export default class DailyGoalDisplay extends React.Component<GoalProps, GoalState> {
@@ -35,7 +35,7 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 		else {
 			return {
 				time: time,
-				len: 0,
+				len: "",
 			};
 		}
 	}
@@ -52,8 +52,7 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 	};
 
 	private assignGoal = () => {
-		this.props.assignGoal(this.props.goal.name, FormatTime(this.date, true), this.state.len);
-		this.setState(this.initState());
+		this.props.assignGoal(this.props.goal.name, FormatTime(this.date, true), Number(this.state.len));
 	};
 
 	render = () => {
@@ -65,13 +64,14 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 			<div className="dailyGoal">
 				<div className="dailyGoalName">{props.goal.name}</div>
 				<div className={'dailyButtons'}>
+
 					<div className={'reassign'}>
 						<input type="time"
 						       value={this.state.time}
 						       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({time: e.target.value})}
 						/>
 						<input type="number"
-						       value={this.state.len}
+						       value={this.state.len.toString()}
 						       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({len: parseInt(e.target.value)})}
 						/>
 						<button
