@@ -39,7 +39,7 @@ let Time12to24 = (time: string) => {
 
 	let minute = lastHalf.substr(0, 2);
 	let meridian = lastHalf.substr(2, 2);
-	if (meridian == "pm") {
+	if (meridian == "pm" && hour != 12) {
 		hour += 12;
 	}
 
