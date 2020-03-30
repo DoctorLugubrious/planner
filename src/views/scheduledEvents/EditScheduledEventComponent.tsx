@@ -76,7 +76,7 @@ export default class EditScheduledEventComponent extends React.Component<Schedul
 
 		let event = {
 			name: this.state.name,
-			date: new Date(this.state.date + "T" + this.state.time),
+			date: new Date((this.state.date + " " + this.state.time).replace(/-/g, '/')),
 			len: Number(this.state.len),
 		};
 		if (this.props.event != undefined) {
