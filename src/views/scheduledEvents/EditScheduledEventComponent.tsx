@@ -95,7 +95,7 @@ export default class EditScheduledEventComponent extends React.Component<Schedul
 			<input type="date" onChange={this.changeDate} value={this.state.date}/>
 			<h3>time</h3>
 			<div className={'timeInput'}>
-				At <input type="time" onChange={this.changeTime} value={this.state.time}/>
+				At <input type="time"  step="5" onChange={this.changeTime} value={this.state.time}/>
 				for
 				<input type="number" onChange={this.changeLength} value={this.state.len}/>
 				minutes

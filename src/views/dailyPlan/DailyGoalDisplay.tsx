@@ -68,7 +68,8 @@ export default class DailyGoalDisplay extends React.Component<GoalProps, GoalSta
 					<div className={'reassign'}>
 						<input type="time"
 						       value={this.state.time}
-						       onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({time: e.target.value})}
+							   onChange={(e :ChangeEvent<HTMLInputElement>) => this.setState({time: e.target.value})}
+							   step="5"
 						/>
 						<input type="number"
 						       value={this.state.len.toString()}
