@@ -116,7 +116,7 @@ export default class WeeklyEventView extends React.Component<WeeklyEventViewProp
 				{WeeklyEventView.dayOptions.map(value => <option key={value}>{value}</option>)}
 			</select>
 			<h3>time</h3>
-			at <input type="time" step="5" onChange={this.changeStart} value={this.state.start}/>
+			at <input type="time" step="300" onChange={this.changeStart} value={this.state.start}/>
 			for
 			<input type="number" onChange={this.changeLength} value={this.state.len}/>
 			minutes
